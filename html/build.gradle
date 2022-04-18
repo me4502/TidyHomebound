@@ -23,21 +23,23 @@ gwt {
 
     compiler.strict = true
     compiler.disableCastChecking = true
+    sourceLevel = 1.11
     //// The next line can be useful to uncomment if you want output that hasn't been obfuscated.
 //	compiler.style = org.wisepersist.gradle.plugins.gwt.Style.DETAILED
 }
 
 dependencies {
-	implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-	implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-	implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+//	implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+//	implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
 	implementation project(':core')
 
 //// You can use the lines below instead of the "com.badlogicgames.gdx:gdx-backend-gwt" dependencies.
 //// If you do, follow the steps at https://github.com/tommyettinger/gdx-backends#gwt-290-support
 //// and you can use GWT 2.9.0, which gives you access to Java 11 language features.
-//	implementation "com.github.tommyettinger:gdx-backend-gwt:1.100.1"
-//	implementation "com.github.tommyettinger:gdx-backend-gwt:1.100.1:sources"
+	implementation "com.github.tommyettinger:gdx-backend-gwt:1.100.1"
+	implementation "com.github.tommyettinger:gdx-backend-gwt:1.100.1:sources"
 }
 
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
@@ -142,7 +144,7 @@ tasks.checkGwt.dependsOn(addSource)
 checkGwt.war = file("war")
 
 // You can change the version below to JavaVersion.VERSION_11 if you use the 2.9.0 backend.
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_11
 sourceSets.main.java.srcDirs = [ "src/main/java/" ]
 
 eclipse.project.name = appName + "-html"

@@ -1,34 +1,34 @@
 package com.me4502.tidyhomebound;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.me4502.tidyhomebound.ui.GameUI;
+import com.me4502.tidyhomebound.ui.LoadingUI;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class TidyHomebound extends ApplicationAdapter {
-	private SpriteBatch batch;
-	private Texture image;
+public class TidyHomebound extends Game {
+
+	private GameUI ui;
+	private AssetManager assetManager;
 
 	@Override
 	public void create() {
-		batch = new SpriteBatch();
-		image = new Texture("libgdx.png");
+		this.assetManager = new AssetManager();
+		Assets.loadImmediateAssets(this.assetManager);
+
+		this.ui = new GameUI(this, this.assetManager);
+
+		setScreen(new LoadingUI(this, this.assetManager, this.ui));
 	}
 
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(image, 140, 210);
-		batch.end();
+		super.render();
 	}
 
 	@Override
 	public void dispose() {
-		batch.dispose();
-		image.dispose();
+		ui.dispose();
+		assetManager.dispose();
 	}
 }
