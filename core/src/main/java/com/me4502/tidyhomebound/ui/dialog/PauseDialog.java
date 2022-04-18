@@ -1,12 +1,13 @@
 package com.me4502.tidyhomebound.ui.dialog;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.me4502.tidyhomebound.Assets;
+import com.me4502.tidyhomebound.TidyHomebound;
 
 public class PauseDialog extends Dialog {
     public PauseDialog(DialogHolder parent) {
@@ -20,13 +21,14 @@ public class PauseDialog extends Dialog {
         }
 
         batch.begin();
-        batch.setColor(Color.WHITE);
-        GlyphLayout layout = new GlyphLayout(assetManager.get(Assets.DOGICA), "PAUSED");
-        assetManager.get(Assets.DOGICA).draw(
+        BitmapFont font = assetManager.get(Assets.DOGICA);
+        font.setColor(Color.WHITE);
+        GlyphLayout layout = new GlyphLayout(font, "PAUSED");
+        font.draw(
             batch,
             layout,
-            (Gdx.graphics.getWidth() - layout.width) / 2f,
-            (Gdx.graphics.getHeight() + layout.height) / 2f
+            (TidyHomebound.GAME_WIDTH - layout.width) / 2f,
+            (TidyHomebound.GAME_HEIGHT + layout.height) / 2f
         );
         batch.end();
     }

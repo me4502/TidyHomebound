@@ -1,9 +1,17 @@
 package com.me4502.tidyhomebound.game;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.me4502.tidyhomebound.TidyHomebound;
+import com.me4502.tidyhomebound.game.actor.Spoon;
+import com.me4502.tidyhomebound.ui.GameOverScreen;
 import com.me4502.tidyhomebound.ui.GameUI;
 import com.me4502.tidyhomebound.ui.dialog.EndOfDayDialog;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameState {
@@ -14,7 +22,10 @@ public class GameState {
     // Everything that is set for the whole game
     private final GameUI ui;
     private final Stage stage;
+    private final AssetManager assetManager;
+    private final TidyHomebound homebound;
     private final int baseSpoons;
+    private final int baseEmergencySpoons;
     private final double dayLength;
 
     // High-level state logic (eg, which day it is)
@@ -28,11 +39,16 @@ public class GameState {
     private double handling = 1;
     private double selfCare = 1;
 
-    public GameState(GameUI ui, Stage stage) {
+    private final List<Spoon> spoonActors = new ArrayList<>();
+
+    public GameState(TidyHomebound homebound, GameUI ui, Stage stage, AssetManager assetManager) {
+        this.homebound = homebound;
         this.ui = ui;
         this.stage = stage;
+        this.assetManager = assetManager;
 
         baseSpoons = 5;
+        baseEmergencySpoons = 2;
         dayLength = 60 * 2; // 2 minutes per day.
 
         startNewDay();
@@ -46,6 +62,20 @@ public class GameState {
         spoonModifier = -borrowedSpoons; // If spoons are borrowed, they lower the multiplier.
         borrowedSpoons = 0; // Reset borrowed spoons
         spoons = baseSpoons - spoonModifier; // Set spoons to base spoons minus the modifier
+
+        // Reset actors
+        spoonActors.forEach(spoon -> spoon.addAction(Actions.removeActor()));
+        spoonActors.clear();
+
+        // Add new actors
+        int leftBound = (baseSpoons + baseEmergencySpoons) * (32 + 2);
+        for (int i = 0; i < spoons; i++) {
+            Spoon spoon = new Spoon(assetManager, new Vector2(TidyHomebound.GAME_WIDTH - 16 - (leftBound - (32 + 2) * i), TidyHomebound.GAME_HEIGHT - 137));
+            stage.addActor(spoon);
+            spoonActors.add(spoon);
+        }
+
+        ui.setDialog(null);
     }
 
     public boolean isAlive() {
@@ -65,6 +95,10 @@ public class GameState {
             this.ui.setDialog(new EndOfDayDialog(this.ui, this));
             return;
         }
+        if (handling <= 0) {
+            this.homebound.setScreen(new GameOverScreen(this.homebound, this.assetManager, this));
+            return;
+        }
 
         stage.act(delta);
     }
@@ -76,11 +110,11 @@ public class GameState {
      */
     public double getNightPercentage() {
         double dayStart = this.dayLength * 0.05; // 5% of the day
-        double twilightStart = this.dayLength - (this.dayLength * 0.2); // Final 20% of the day.
-        double dayEnd = this.dayLength - (this.dayLength * 0.05); // Final 5% of the day.
+        double twilightStart = this.dayLength - this.dayLength * 0.2; // Final 20% of the day.
+        double dayEnd = this.dayLength - this.dayLength * 0.05; // Final 5% of the day.
 
         if (this.timeOfDay <= dayStart) {
-            return 1.0 - (timeOfDay / dayStart);
+            return Math.max(Math.min(1.0 - timeOfDay / dayStart, 1.0), 0.0);
         }
         if (this.timeOfDay >= twilightStart && this.timeOfDay < dayEnd) {
             return Math.min((timeOfDay - twilightStart) / (dayLength * 0.05), TWILIGHT_BRIGHTNESS);
@@ -90,5 +124,36 @@ public class GameState {
         }
 
         return 0;
+    }
+
+    public double getNormalisedTimeOfDay() {
+        return timeOfDay / dayLength;
+    }
+
+    /**
+     * Gets the current day number.
+     *
+     * @return The day
+     */
+    public int getDay() {
+        return this.day;
+    }
+
+    /**
+     * Gets the current handling/coping level.
+     *
+     * @return coping level
+     */
+    public double getHandling() {
+        return handling;
+    }
+
+    /**
+     * Gets the current self-care level.
+     *
+     * @return self-care level
+     */
+    public double getSelfCare() {
+        return selfCare;
     }
 }

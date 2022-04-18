@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.me4502.tidyhomebound.Assets;
@@ -24,6 +25,15 @@ public class LoadingUI extends ScreenAdapter {
         this.ui = ui;
 
         this.batch = new SpriteBatch();
+        this.batch.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
+    }
+
+    String repeat(String s, int n) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append(s);
+        }
+        return sb.toString();
     }
 
     @Override
@@ -39,13 +49,14 @@ public class LoadingUI extends ScreenAdapter {
         int dots = (int) (System.currentTimeMillis() / 1000 % 4);
 
         batch.begin();
-        batch.setColor(Color.WHITE);
-        GlyphLayout layout = new GlyphLayout(assetManager.get(Assets.DOGICA), "Loading...");
-        assetManager.get(Assets.DOGICA).draw(
+        BitmapFont font = assetManager.get(Assets.DOGICA);
+        font.setColor(Color.WHITE);
+        GlyphLayout layout = new GlyphLayout(font, "Loading...");
+        font.draw(
             batch,
-            "Loading" + ".".repeat(dots),
-            (Gdx.graphics.getWidth() - layout.width) / 2f,
-            (Gdx.graphics.getHeight() + layout.height) / 2f
+            "Loading" + repeat(".", dots),
+            (TidyHomebound.GAME_WIDTH - layout.width) / 2f,
+            (TidyHomebound.GAME_HEIGHT + layout.height) / 2f
         );
         batch.end();
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class Assets {
     // Textures
@@ -16,9 +17,17 @@ public class Assets {
 
     // Icons
     public static final AssetDescriptor<Texture> SPOON = new AssetDescriptor<>("icons/spoon.png", Texture.class);
+    public static final AssetDescriptor<Texture> BORROWED_SPOON = new AssetDescriptor<>("icons/borrowed_spoon.png", Texture.class);
+
+    // UI
+    public static final AssetDescriptor<TextureAtlas> DIALOG = new AssetDescriptor<>("ui/dialog.9.atlas", TextureAtlas.class);
+    public static final AssetDescriptor<TextureAtlas> COPING_BAR_FULL = new AssetDescriptor<>("ui/coping_bar_full.9.atlas", TextureAtlas.class);
+    public static final AssetDescriptor<TextureAtlas> COPING_BAR_EMPTY = new AssetDescriptor<>("ui/coping_bar_empty.9.atlas", TextureAtlas.class);
+    public static final AssetDescriptor<Texture> CLOCK = new AssetDescriptor<>("ui/clock.png", Texture.class);
+    public static final AssetDescriptor<Texture> CLOCK_HAND = new AssetDescriptor<>("ui/clock_hand.png", Texture.class);
 
     // Fonts
-    public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.fnt", BitmapFont.class);
+    public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.16.fnt", BitmapFont.class);
 
     /**
      * Triggers loads of any assets needed by the game.
@@ -30,6 +39,13 @@ public class Assets {
         assetManager.load(WALL_BASE);
         assetManager.load(BACKGROUND_BASE);
         assetManager.load(SPOON);
+        assetManager.load(BORROWED_SPOON);
+
+        assetManager.load(DIALOG);
+        assetManager.load(COPING_BAR_FULL);
+        assetManager.load(COPING_BAR_EMPTY);
+        assetManager.load(CLOCK);
+        assetManager.load(CLOCK_HAND);
     }
 
     /**

@@ -10,14 +10,20 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 import com.me4502.tidyhomebound.game.GameInputProcessor;
 import com.me4502.tidyhomebound.game.GameState;
+import com.me4502.tidyhomebound.game.actor.Clock;
+import com.me4502.tidyhomebound.game.actor.CopingBar;
+import com.me4502.tidyhomebound.game.actor.SelfCareBar;
 import com.me4502.tidyhomebound.room.RoomRenderer;
 import com.me4502.tidyhomebound.ui.dialog.Dialog;
 import com.me4502.tidyhomebound.ui.dialog.DialogHolder;
+import com.me4502.tidyhomebound.ui.dialog.DialogRenderer;
 
 public class GameUI extends ScreenAdapter implements DialogHolder {
 
@@ -44,7 +50,10 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         this.shapeRenderer = new ShapeRenderer();
         this.roomRenderer = new RoomRenderer(assetManager);
 
-        this.camera = new OrthographicCamera(7, 7 * ((Gdx.graphics.getHeight() * FAKE_ASPECT_RATIO) / (float)Gdx.graphics.getWidth()));
+        this.batch.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
+        this.shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
+
+        this.camera = new OrthographicCamera(7, 7 * ((TidyHomebound.GAME_HEIGHT * FAKE_ASPECT_RATIO) / (float)TidyHomebound.GAME_WIDTH));
         camera.position.set(9.5f, 10, 9.5f);
         camera.direction.set(-1, -1, -1);
         camera.near = 0.1f;
@@ -57,10 +66,15 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     @Override
     public void show() {
         this.backgroundSprite = new Sprite(assetManager.get(Assets.BACKGROUND_BASE));
-        this.stage = new Stage();
+        this.stage = new Stage(new StretchViewport(TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT), this.batch);
 
-        this.gameState = new GameState(this, stage);
+        this.gameState = new GameState(homebound, this, stage, assetManager);
         this.inputProcessor = new InputMultiplexer(new GameInputProcessor(this, this.gameState), stage);
+
+        stage.addActor(new Clock(assetManager, gameState, new Vector2(TidyHomebound.GAME_WIDTH - 57, TidyHomebound.GAME_HEIGHT - 57)));
+        stage.addActor(new CopingBar(assetManager, gameState, new Vector2(18, TidyHomebound.GAME_HEIGHT - 50), TidyHomebound.GAME_WIDTH - 95, 32));
+        stage.addActor(new SelfCareBar(assetManager, gameState, new Vector2(18, TidyHomebound.GAME_HEIGHT - 125), 250, 32));
+
         setDialog(null);
     }
 
@@ -68,11 +82,11 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         batch.begin();
 
         // 10 x 10 bricks
-        float widthScaleFactor = Gdx.graphics.getWidth() / 320f;
-        float heightScaleFactor = Gdx.graphics.getHeight() / 320f;
+        float widthScaleFactor = TidyHomebound.GAME_WIDTH / 320f;
+        float heightScaleFactor = TidyHomebound.GAME_HEIGHT / 320f;
 
-        for (var x = 0; x < Gdx.graphics.getWidth(); x += 32 * widthScaleFactor) {
-            for (var y = 0; y < Gdx.graphics.getHeight(); y += 32 * heightScaleFactor) {
+        for (var x = 0; x < TidyHomebound.GAME_WIDTH; x += 32) {
+            for (var y = 0; y < TidyHomebound.GAME_HEIGHT; y += 32) {
                 batch.draw(backgroundSprite, x, y, 32 * widthScaleFactor, 32 * heightScaleFactor);
             }
         }
@@ -85,12 +99,12 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-            var color = Color.BLACK;
+            var color = Color.BLACK.cpy();
             color.a = nightPercentage;
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(color);
-            shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            shapeRenderer.rect(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
             shapeRenderer.end();
         }
     }
@@ -113,6 +127,17 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         // Render the room first
         roomRenderer.render(camera);
 
+        batch.begin();
+        DialogRenderer.drawDialog(
+            assetManager,
+            batch,
+            5,
+            TidyHomebound.GAME_HEIGHT - (TidyHomebound.GAME_HEIGHT / 3) + 5,
+            TidyHomebound.GAME_WIDTH - 10,
+            (TidyHomebound.GAME_HEIGHT / 3) - 10
+        );
+        batch.end();
+
         // Draw the stage
         stage.draw();
 
@@ -128,7 +153,9 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     public void dispose() {
         batch.dispose();
         roomRenderer.dispose();
-        stage.dispose();
+        if (stage != null) {
+            stage.dispose();
+        }
         shapeRenderer.dispose();
     }
 
