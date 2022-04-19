@@ -14,7 +14,7 @@ public class ImageChore extends Image implements Chore {
     private static final float BAD_CUTOFF = 0.3f;
     private static final float CRITICAL_CUTOFF = 0.7f;
 
-    private final GameState gameState;
+    protected final GameState gameState;
     private final ChoreAttributes attributes;
     private final Vector2 homePosition;
 
@@ -22,7 +22,7 @@ public class ImageChore extends Image implements Chore {
     private float timeSinceDamage;
     private State state = State.GOOD;
 
-    private final List<Spoon> assignedSpoons = new ArrayList<>();
+    protected final List<Spoon> assignedSpoons = new ArrayList<>();
 
     private Drawable goodTexture;
     private Drawable badTexture;
@@ -69,6 +69,10 @@ public class ImageChore extends Image implements Chore {
 
     public float getUrgency() {
         return this.urgency;
+    }
+
+    public Vector2 getHomePosition() {
+        return this.homePosition;
     }
 
     @Override

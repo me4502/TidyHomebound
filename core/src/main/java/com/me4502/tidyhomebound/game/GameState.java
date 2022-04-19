@@ -5,8 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 import com.me4502.tidyhomebound.game.actor.Spoon;
+import com.me4502.tidyhomebound.game.actor.chore.Bed;
 import com.me4502.tidyhomebound.game.actor.chore.Fridge;
 import com.me4502.tidyhomebound.game.actor.chore.ImageChore;
 import com.me4502.tidyhomebound.game.actor.chore.ImageChoreDragTarget;
@@ -68,6 +70,7 @@ public class GameState {
         dayLength = 60 * 2; // 2 minutes per day.
 
         createFurniture(new PlantPot(assetManager, this, new Vector2(60, 100)));
+        createFurniture(new Bed(assetManager, this, new Vector2(267, 224.5f)));
         createFurniture(new Sink(assetManager, this, new Vector2(128, 184.5f)));
         createFurniture(new Oven(assetManager, this, new Vector2(68, 160f)));
         createFurniture(new Fridge(assetManager, this, new Vector2(5, 132.5f)));

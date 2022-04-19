@@ -42,6 +42,7 @@ public class Assets {
     public static final AssetDescriptor<Texture> OVEN_BAD = new AssetDescriptor<>("furniture/oven_bad.png", Texture.class);
     public static final AssetDescriptor<Texture> OVEN_CRITICAL = new AssetDescriptor<>("furniture/oven_critical.png", Texture.class);
 
+    public static final AssetDescriptor<Texture> BED = new AssetDescriptor<>("furniture/bed.png", Texture.class);
 
     // Fonts
     public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.16.fnt", BitmapFont.class);
@@ -75,6 +76,8 @@ public class Assets {
         assetManager.load(OVEN_GOOD);
         assetManager.load(OVEN_BAD);
         assetManager.load(OVEN_CRITICAL);
+
+        assetManager.load(BED);
     }
 
     /**
