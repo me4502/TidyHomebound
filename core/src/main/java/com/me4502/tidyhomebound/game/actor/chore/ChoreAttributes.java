@@ -8,7 +8,7 @@ public class ChoreAttributes {
     // Controls how quickly the chore degrades
     private final double frequency;
 
-    // Controls how quickly this chore impacts coping
+    // Controls how badly this chore impacts coping
     private final double importance;
 
     // Controls how much completion of this chore improves self care score

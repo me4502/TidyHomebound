@@ -53,7 +53,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         this.batch.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
         this.shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
 
-        this.camera = new OrthographicCamera(7, 7 * ((TidyHomebound.GAME_HEIGHT * FAKE_ASPECT_RATIO) / (float)TidyHomebound.GAME_WIDTH));
+        this.camera = new OrthographicCamera(5.4f, 5.4f * ((TidyHomebound.GAME_HEIGHT * FAKE_ASPECT_RATIO) / (float)TidyHomebound.GAME_WIDTH));
         camera.position.set(9.5f, 10, 9.5f);
         camera.direction.set(-1, -1, -1);
         camera.near = 0.1f;
@@ -67,6 +67,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     public void show() {
         this.backgroundSprite = new Sprite(assetManager.get(Assets.BACKGROUND_BASE));
         this.stage = new Stage(new StretchViewport(TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT), this.batch);
+//        this.stage.setDebugAll(TidyHomebound.DEBUG_MODE);
 
         this.gameState = new GameState(homebound, this, stage, assetManager);
         this.inputProcessor = new InputMultiplexer(new GameInputProcessor(this, this.gameState), stage);

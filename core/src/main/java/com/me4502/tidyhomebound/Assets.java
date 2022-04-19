@@ -12,6 +12,7 @@ public class Assets {
     public static final AssetDescriptor<Texture> FLOOR_BASE = new AssetDescriptor<>("tiles/floor_base.png", Texture.class);
 
     public static final AssetDescriptor<Texture> WALL_BASE = new AssetDescriptor<>("tiles/wall_base.png", Texture.class);
+    public static final AssetDescriptor<Texture> DOOR_BASE = new AssetDescriptor<>("tiles/door_base.png", Texture.class);
 
     public static final AssetDescriptor<Texture> BACKGROUND_BASE = new AssetDescriptor<>("tiles/background_base.png", Texture.class);
 
@@ -29,6 +30,19 @@ public class Assets {
     // Furniture
     public static final AssetDescriptor<Texture> PLANT_POT_GOOD = new AssetDescriptor<>("furniture/plant_pot_good.png", Texture.class);
 
+    public static final AssetDescriptor<Texture> FRIDGE_GOOD = new AssetDescriptor<>("furniture/fridge_good.png", Texture.class);
+    public static final AssetDescriptor<Texture> FRIDGE_BAD = new AssetDescriptor<>("furniture/fridge_bad.png", Texture.class);
+    public static final AssetDescriptor<Texture> FRIDGE_CRITICAL = new AssetDescriptor<>("furniture/fridge_critical.png", Texture.class);
+
+    public static final AssetDescriptor<Texture> SINK_GOOD = new AssetDescriptor<>("furniture/sink_good.png", Texture.class);
+    public static final AssetDescriptor<Texture> SINK_BAD = new AssetDescriptor<>("furniture/sink_bad.png", Texture.class);
+    public static final AssetDescriptor<Texture> SINK_CRITICAL = new AssetDescriptor<>("furniture/sink_critical.png", Texture.class);
+
+    public static final AssetDescriptor<Texture> OVEN_GOOD = new AssetDescriptor<>("furniture/oven_good.png", Texture.class);
+    public static final AssetDescriptor<Texture> OVEN_BAD = new AssetDescriptor<>("furniture/oven_bad.png", Texture.class);
+    public static final AssetDescriptor<Texture> OVEN_CRITICAL = new AssetDescriptor<>("furniture/oven_critical.png", Texture.class);
+
+
     // Fonts
     public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.16.fnt", BitmapFont.class);
 
@@ -40,6 +54,7 @@ public class Assets {
     public static void loadGameAssets(AssetManager assetManager) {
         assetManager.load(FLOOR_BASE);
         assetManager.load(WALL_BASE);
+        assetManager.load(DOOR_BASE);
         assetManager.load(BACKGROUND_BASE);
         assetManager.load(SPOON);
         assetManager.load(BORROWED_SPOON);
@@ -51,6 +66,15 @@ public class Assets {
         assetManager.load(CLOCK_HAND);
 
         assetManager.load(PLANT_POT_GOOD);
+        assetManager.load(FRIDGE_GOOD);
+        assetManager.load(FRIDGE_BAD);
+        assetManager.load(FRIDGE_CRITICAL);
+        assetManager.load(SINK_GOOD);
+        assetManager.load(SINK_BAD);
+        assetManager.load(SINK_CRITICAL);
+        assetManager.load(OVEN_GOOD);
+        assetManager.load(OVEN_BAD);
+        assetManager.load(OVEN_CRITICAL);
     }
 
     /**

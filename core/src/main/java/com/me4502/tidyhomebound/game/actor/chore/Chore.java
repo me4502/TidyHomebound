@@ -10,7 +10,9 @@ public interface Chore {
 
     boolean canPerform();
 
-    void perform(Spoon spoon);
+    void reward();
+
+    void perform(Spoon spoon, float delta);
 
     void removeSpoon(Spoon spoon);
 

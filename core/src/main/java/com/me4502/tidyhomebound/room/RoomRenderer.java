@@ -24,11 +24,13 @@ public class RoomRenderer {
         rightWallMatrix.setToRotation(new Vector3(1, 0, 0), 180);
         leftWallMatrix.setToRotation(new Vector3(1, 0, 0), -180).rotate(new Vector3(0, 1, 0), -90);
 
+        // The above matrices render a room with a 23.3 degree floor angle
+
         floorBatch = new SpriteBatch();
         leftWallBatch = new SpriteBatch();
         rightWallBatch = new SpriteBatch();
 
-        this.roomLayout = new RoomLayout(assetManager, 8, 8);
+        this.roomLayout = new RoomLayout(assetManager, 6, 6);
     }
 
     public void render(Camera camera) {

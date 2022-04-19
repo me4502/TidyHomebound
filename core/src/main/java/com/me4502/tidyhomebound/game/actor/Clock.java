@@ -10,10 +10,10 @@ import com.me4502.tidyhomebound.game.GameState;
 
 public class Clock extends Actor {
 
-    private GameState gameState;
+    private final GameState gameState;
 
-    private Sprite clock;
-    private Sprite clockHand;
+    private final Sprite clock;
+    private final Sprite clockHand;
 
     public Clock(AssetManager assetManager, GameState gameState, Vector2 position) {
         this.gameState = gameState;

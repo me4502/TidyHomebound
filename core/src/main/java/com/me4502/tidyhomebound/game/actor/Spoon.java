@@ -6,18 +6,23 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.me4502.tidyhomebound.Assets;
+import com.me4502.tidyhomebound.game.GameState;
 import com.me4502.tidyhomebound.game.actor.chore.Chore;
 
 public class Spoon extends Image {
 
+    private final GameState gameState;
     private final Vector2 homePosition;
+    private final boolean borrowed;
 
     private Chore target;
 
-    public Spoon(AssetManager assetManager, Vector2 homePosition, boolean borrowed) {
+    public Spoon(AssetManager assetManager, GameState gameState, Vector2 homePosition, boolean borrowed) {
         super(borrowed ? assetManager.get(Assets.BORROWED_SPOON) : assetManager.get(Assets.SPOON));
 
+        this.gameState = gameState;
         this.homePosition = homePosition;
+        this.borrowed = borrowed;
 
         setPosition(homePosition.x, homePosition.y);
         setSize(32, 32);
@@ -25,6 +30,10 @@ public class Spoon extends Image {
 
     public Vector2 getHomePosition() {
         return homePosition;
+    }
+
+    public boolean isBorrowed() {
+        return this.borrowed;
     }
 
     public void setTarget(Chore target) {
@@ -43,10 +52,15 @@ public class Spoon extends Image {
         super.act(delta);
 
         if (target != null) {
-            target.perform(this);
+            target.perform(this, delta);
             if (target.isComplete()) {
+                target.reward();
                 target.removeSpoon(this);
                 setTarget(null);
+                if (isBorrowed()) {
+                    setVisible(false);
+                    gameState.logSpoonBorrowed();
+                }
             }
         }
     }

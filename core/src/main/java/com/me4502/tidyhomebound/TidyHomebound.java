@@ -16,6 +16,8 @@ public class TidyHomebound extends Game {
 	public static int GAME_WIDTH = 640;
 	public static int GAME_HEIGHT = 640;
 
+	public static boolean DEBUG_MODE = true;
+
 	@Override
 	public void create() {
 		this.assetManager = new AssetManager();

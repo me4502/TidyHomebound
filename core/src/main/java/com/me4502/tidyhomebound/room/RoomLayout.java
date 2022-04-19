@@ -50,7 +50,7 @@ public class RoomLayout {
         }
 
         for (var x = 0; x < height; x++) {
-            var wallSprite = new Sprite(assetManager.get(Assets.WALL_BASE));
+            var wallSprite = new Sprite(assetManager.get(x == 4 ? Assets.DOOR_BASE : Assets.WALL_BASE));
             wallSprite.setSize(1, WALL_HEIGHT);
             wallSprite.setPosition(x - height, -WALL_HEIGHT);
             wallSprite.flip(false, true);
