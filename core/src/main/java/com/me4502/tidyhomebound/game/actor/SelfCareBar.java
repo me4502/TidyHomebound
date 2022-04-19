@@ -83,9 +83,4 @@ public class SelfCareBar extends Actor {
             ScissorStack.popScissors();
         }
     }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
 }

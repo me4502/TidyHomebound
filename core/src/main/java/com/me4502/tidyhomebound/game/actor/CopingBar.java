@@ -83,9 +83,4 @@ public class CopingBar extends Actor {
             ScissorStack.popScissors();
         }
     }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
 }

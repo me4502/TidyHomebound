@@ -26,6 +26,9 @@ public class Assets {
     public static final AssetDescriptor<Texture> CLOCK = new AssetDescriptor<>("ui/clock.png", Texture.class);
     public static final AssetDescriptor<Texture> CLOCK_HAND = new AssetDescriptor<>("ui/clock_hand.png", Texture.class);
 
+    // Furniture
+    public static final AssetDescriptor<Texture> PLANT_POT_GOOD = new AssetDescriptor<>("furniture/plant_pot_good.png", Texture.class);
+
     // Fonts
     public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.16.fnt", BitmapFont.class);
 
@@ -46,6 +49,8 @@ public class Assets {
         assetManager.load(COPING_BAR_EMPTY);
         assetManager.load(CLOCK);
         assetManager.load(CLOCK_HAND);
+
+        assetManager.load(PLANT_POT_GOOD);
     }
 
     /**
