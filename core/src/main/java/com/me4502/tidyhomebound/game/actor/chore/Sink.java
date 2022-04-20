@@ -8,7 +8,7 @@ import com.me4502.tidyhomebound.game.GameState;
 
 public class Sink extends ImageChore {
     public Sink(AssetManager assetManager, GameState gameState, Vector2 homePosition) {
-        super(gameState, homePosition, new ChoreAttributes(0.4, 0.4, 0.8, 0));
+        super(gameState, homePosition, new ChoreAttributes(0.6, 0.6, 0.7, 0));
 
         setTextures(
             new TextureRegionDrawable(assetManager.get(Assets.SINK_GOOD)),

@@ -36,7 +36,7 @@ public class GameState {
 
     private final static double SELF_CARE_LOW = 0.5;
     private final static double SELF_CARE_CRITICAL = 0.2;
-    private final static double SELF_CARE_AMBIENT_LOSS = 0.005;
+    private final static double SELF_CARE_AMBIENT_LOSS = 0.01;
 
     // Everything that is set for the whole game
     private final GameUI ui;
@@ -103,19 +103,25 @@ public class GameState {
         }
     }
 
+    public int getSelfCareSpoonPenalty() {
+        if (this.selfCare < SELF_CARE_LOW) {
+            return this.selfCare < SELF_CARE_CRITICAL ? 2 : 1;
+        }
+        return 0;
+    }
+
+    public int getNextSpoons() {
+        int spoonModifier = borrowedSpoons + this.getSelfCareSpoonPenalty(); // If spoons are borrowed, they lower the multiplier.
+        return baseSpoons - spoonModifier; // Set spoons to base spoons minus the modifier
+    }
+
     public void startNewDay() {
         day ++;
         timeOfDay = 0;
 
         // Spoon handler
-        int spoonModifier = borrowedSpoons; // If spoons are borrowed, they lower the multiplier.
+        int spoons = getNextSpoons();
         borrowedSpoons = 0; // Reset borrowed spoons
-
-        if (this.selfCare < SELF_CARE_LOW) {
-            spoonModifier += this.selfCare < SELF_CARE_CRITICAL ? 2 : 1;
-        }
-
-        int spoons = baseSpoons - spoonModifier; // Set spoons to base spoons minus the modifier
 
         // Reset actors
         spoonActors.forEach(spoon -> spoon.addAction(Actions.removeActor()));
@@ -144,7 +150,7 @@ public class GameState {
     public void update(float delta) {
         timeOfDay += delta;
         if (timeOfDay >= dayLength - 1) {
-            this.ui.setDialog(new EndOfDayDialog(this.ui, this));
+            this.ui.setDialog(new EndOfDayDialog(assetManager, this.ui, this));
             return;
         }
         if (handling <= 0) {
@@ -191,6 +197,10 @@ public class GameState {
      */
     public int getDay() {
         return this.day;
+    }
+
+    public int getBorrowedSpoons() {
+        return this.borrowedSpoons;
     }
 
     /**

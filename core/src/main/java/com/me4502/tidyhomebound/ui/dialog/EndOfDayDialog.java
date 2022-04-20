@@ -1,19 +1,27 @@
 package com.me4502.tidyhomebound.ui.dialog;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 import com.me4502.tidyhomebound.game.GameState;
+import com.me4502.tidyhomebound.game.actor.CopingBar;
+import com.me4502.tidyhomebound.game.actor.SelfCareBar;
 
 public class EndOfDayDialog extends Dialog {
 
@@ -21,11 +29,50 @@ public class EndOfDayDialog extends Dialog {
     private final Stage stage;
     private final InputProcessor multiplexedInput;
 
-    public EndOfDayDialog(DialogHolder parent, GameState gameState) {
+    public EndOfDayDialog(AssetManager assetManager, DialogHolder parent, GameState gameState) {
         super(parent);
         this.gameState = gameState;
         this.stage = new Stage(new StretchViewport(TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT));
+        stage.setDebugAll(TidyHomebound.DEBUG_MODE);
         this.multiplexedInput = new InputMultiplexer(stage, this);
+
+        Table table = new Table();
+
+        table.row();
+        table.add(new Label("End of Day " + gameState.getDay(), new Label.LabelStyle(assetManager.get(Assets.DOGICA), Color.BLACK))).center().padBottom(10);
+
+        table.row();
+        table.add(new CopingBar(assetManager, gameState, new Vector2(45, TidyHomebound.GAME_HEIGHT - 100), TidyHomebound.GAME_WIDTH - 90, 32))
+            .size(TidyHomebound.GAME_WIDTH - 90, 32 + 35).padBottom(10);
+
+        table.row();
+        table.add(new SelfCareBar(assetManager, gameState, new Vector2(45, TidyHomebound.GAME_HEIGHT - 175), TidyHomebound.GAME_WIDTH - 90, 32))
+            .size(TidyHomebound.GAME_WIDTH - 90, 32 + 35).padBottom(10);
+
+        table.row();
+        table.add(new Label("Emergency Spoons Used: " + gameState.getBorrowedSpoons(), new Label.LabelStyle(assetManager.get(Assets.DOGICA), Color.BLACK))).left().padBottom(30);
+
+        table.row();
+        table.add(new Label("Self Care Spoon Penalty: " + gameState.getSelfCareSpoonPenalty(), new Label.LabelStyle(assetManager.get(Assets.DOGICA), Color.BLACK))).left().padBottom(30);
+
+        table.row().growY();
+        table.add(new Label("Spoons Available Tomorrow: " + gameState.getNextSpoons(), new Label.LabelStyle(assetManager.get(Assets.DOGICA), Color.BLACK))).left().growY().padBottom(200);
+
+        table.row().bottom();
+        var button = new TextButton("Continue", new TextButton.TextButtonStyle(new NinePatchDrawable(assetManager.get(Assets.DIALOG).createPatch("dialog")), null, null, assetManager.get(Assets.DOGICA)));
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameState.startNewDay();
+            }
+        });
+        table.add(button);
+
+        Container<Table> tableContainer = new Container<>(table);
+        tableContainer.padTop(35f);
+        tableContainer.align(Align.top);
+        tableContainer.setFillParent(true);
+        stage.addActor(tableContainer);
     }
 
     @Override
@@ -39,10 +86,6 @@ public class EndOfDayDialog extends Dialog {
             TidyHomebound.GAME_WIDTH - 10,
             TidyHomebound.GAME_HEIGHT - 10
         );
-        BitmapFont font = assetManager.get(Assets.DOGICA);
-        GlyphLayout layout = new GlyphLayout(font, "End of Day " + gameState.getDay());
-        font.setColor(Color.BLACK);
-        font.draw(batch, layout, (TidyHomebound.GAME_WIDTH - layout.width) / 2, TidyHomebound.GAME_HEIGHT - 35);
         batch.end();
 
         this.stage.act();

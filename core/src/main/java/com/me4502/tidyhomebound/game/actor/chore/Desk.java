@@ -8,7 +8,7 @@ import com.me4502.tidyhomebound.game.GameState;
 
 public class Desk extends ImageChore {
     public Desk(AssetManager assetManager, GameState gameState, Vector2 homePosition) {
-        super(gameState, homePosition, new ChoreAttributes(0.4, 0.4, 0.8, 0));
+        super(gameState, homePosition, new ChoreAttributes(0.2, 0.8, 0.2, 0));
 
         setTextures(
             new TextureRegionDrawable(assetManager.get(Assets.DESK_GOOD)),

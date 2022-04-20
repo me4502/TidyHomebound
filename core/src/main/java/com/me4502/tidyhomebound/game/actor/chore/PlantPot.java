@@ -9,7 +9,7 @@ import com.me4502.tidyhomebound.game.GameState;
 public class PlantPot extends ImageChore {
 
     public PlantPot(AssetManager assetManager, GameState gameState, Vector2 homePosition) {
-        super(gameState, homePosition, new ChoreAttributes(0.2, 0.3, 0.5, 0.05));
+        super(gameState, homePosition, new ChoreAttributes(0.2, 0.4, 0.6, 0.025));
 
         setTextures(
             new TextureRegionDrawable(assetManager.get(Assets.PLANT_POT_GOOD)),

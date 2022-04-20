@@ -8,7 +8,7 @@ import com.me4502.tidyhomebound.game.GameState;
 
 public class Fridge extends ImageChore {
     public Fridge(AssetManager assetManager, GameState gameState, Vector2 homePosition) {
-        super(gameState, homePosition, new ChoreAttributes(0.4, 0.4, 0.8, 0));
+        super(gameState, homePosition, new ChoreAttributes(0.4, 0.3, 0.8, 0));
 
         setTextures(
             new TextureRegionDrawable(assetManager.get(Assets.FRIDGE_GOOD)),

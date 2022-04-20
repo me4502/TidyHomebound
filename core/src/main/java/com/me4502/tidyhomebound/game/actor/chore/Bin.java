@@ -9,7 +9,7 @@ import com.me4502.tidyhomebound.game.GameState;
 public class Bin extends ImageChore {
 
     public Bin(AssetManager assetManager, GameState gameState, Vector2 homePosition) {
-        super(gameState, homePosition, new ChoreAttributes(0.2, 0.3, 0.5, 0));
+        super(gameState, homePosition, new ChoreAttributes(0.2, 0.6, 0.6, 0));
 
         setTextures(
             new TextureRegionDrawable(assetManager.get(Assets.BIN_GOOD)),

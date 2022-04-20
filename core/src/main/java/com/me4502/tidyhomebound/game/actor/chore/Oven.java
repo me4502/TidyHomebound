@@ -8,7 +8,7 @@ import com.me4502.tidyhomebound.game.GameState;
 
 public class Oven extends ImageChore {
     public Oven(AssetManager assetManager, GameState gameState, Vector2 homePosition) {
-        super(gameState, homePosition, new ChoreAttributes(0.4, 0.4, 0.8, 0));
+        super(gameState, homePosition, new ChoreAttributes(0.8, 0.3, 0.5, 0));
 
         setTextures(
             new TextureRegionDrawable(assetManager.get(Assets.OVEN_GOOD)),

@@ -116,7 +116,7 @@ public class ImageChore extends Image implements Chore {
 
     @Override
     public void perform(Spoon spoon, float delta) {
-        modifyUrgency((-1.0 + attributes.getDifficulty()) * delta);
+        modifyUrgency((-1.0 + attributes.getDifficulty()) * delta * 0.1);
     }
 
     private void modifyUrgency(double amount) {
