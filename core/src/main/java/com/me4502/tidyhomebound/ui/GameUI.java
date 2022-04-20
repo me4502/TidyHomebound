@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,6 +25,7 @@ import com.me4502.tidyhomebound.room.RoomRenderer;
 import com.me4502.tidyhomebound.ui.dialog.Dialog;
 import com.me4502.tidyhomebound.ui.dialog.DialogHolder;
 import com.me4502.tidyhomebound.ui.dialog.DialogRenderer;
+import com.me4502.tidyhomebound.ui.dialog.StartDialog;
 
 public class GameUI extends ScreenAdapter implements DialogHolder {
 
@@ -42,6 +44,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     private Stage stage;
 
     private Sprite backgroundSprite;
+    private Music backgroundMusic;
 
     public GameUI(TidyHomebound homebound, AssetManager assetManager) {
         this.homebound = homebound;
@@ -67,16 +70,25 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     public void show() {
         this.backgroundSprite = new Sprite(assetManager.get(Assets.BACKGROUND_BASE));
         this.stage = new Stage(new StretchViewport(TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT));
-//        this.stage.setDebugAll(TidyHomebound.DEBUG_MODE);
 
         this.gameState = new GameState(homebound, this, stage, assetManager);
         this.inputProcessor = new InputMultiplexer(new GameInputProcessor(this, this.gameState), stage);
 
         stage.addActor(new Clock(assetManager, gameState, new Vector2(TidyHomebound.GAME_WIDTH - 57, TidyHomebound.GAME_HEIGHT - 57)));
-        stage.addActor(new CopingBar(assetManager, gameState, new Vector2(18, TidyHomebound.GAME_HEIGHT - 50), TidyHomebound.GAME_WIDTH - 95, 32));
+        stage.addActor(new CopingBar(assetManager, gameState, new Vector2(18, TidyHomebound.GAME_HEIGHT - 50), TidyHomebound.GAME_WIDTH - 205, 32));
         stage.addActor(new SelfCareBar(assetManager, gameState, new Vector2(18, TidyHomebound.GAME_HEIGHT - 125), 250, 32));
 
-        setDialog(null);
+        setDialog(new StartDialog(this));
+
+        this.backgroundMusic = assetManager.get(Assets.BACKGROUND_MUSIC);
+        this.backgroundMusic.setVolume(0.7f);
+        this.backgroundMusic.setLooping(true);
+        this.backgroundMusic.play();
+    }
+
+    @Override
+    public void hide() {
+        this.backgroundMusic.stop();
     }
 
     private void renderBackground() {
@@ -180,5 +192,9 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

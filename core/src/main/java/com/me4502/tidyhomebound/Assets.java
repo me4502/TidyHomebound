@@ -2,6 +2,7 @@ package com.me4502.tidyhomebound;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -22,6 +23,7 @@ public class Assets {
     // Icons
     public static final AssetDescriptor<Texture> SPOON = new AssetDescriptor<>("icons/spoon.png", Texture.class);
     public static final AssetDescriptor<Texture> BORROWED_SPOON = new AssetDescriptor<>("icons/borrowed_spoon.png", Texture.class);
+    public static final AssetDescriptor<Texture> SMOKE = new AssetDescriptor<>("icons/smoke.png", Texture.class);
 
     // UI
     public static final AssetDescriptor<TextureAtlas> DIALOG = new AssetDescriptor<>("ui/dialog.9.atlas", TextureAtlas.class);
@@ -66,6 +68,9 @@ public class Assets {
     // Fonts
     public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.16.fnt", BitmapFont.class);
 
+    // Audio
+    public static final AssetDescriptor<Music> BACKGROUND_MUSIC = new AssetDescriptor<>("audio/safe_at_home.ogg", Music.class);
+
     /**
      * Triggers loads of any assets needed by the game.
      *
@@ -87,6 +92,7 @@ public class Assets {
         assetManager.load(COPING_BAR_EMPTY);
         assetManager.load(CLOCK);
         assetManager.load(CLOCK_HAND);
+        assetManager.load(SMOKE);
 
         assetManager.load(PLANT_POT_GOOD);
         assetManager.load(PLANT_POT_BAD);
@@ -115,6 +121,8 @@ public class Assets {
         assetManager.load(TOAST_SELFCARE_GAIN);
         assetManager.load(TOAST_POSITIVE);
         assetManager.load(TOAST_NEGATIVE);
+
+        assetManager.load(BACKGROUND_MUSIC);
     }
 
     /**

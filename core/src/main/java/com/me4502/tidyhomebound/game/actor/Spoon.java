@@ -36,9 +36,9 @@ public class Spoon extends Image {
         return this.borrowed;
     }
 
-    public void setTarget(Chore target) {
+    public void setTarget(Chore target, boolean snapBack) {
         this.target = target;
-        if (target == null) {
+        if (target == null && snapBack) {
             setPosition(homePosition.x, homePosition.y);
         }
     }
@@ -55,13 +55,17 @@ public class Spoon extends Image {
             target.perform(this, delta);
             if (target.isComplete()) {
                 target.reward();
-                target.removeSpoon(this);
-                setTarget(null);
-                if (isBorrowed()) {
-                    setVisible(false);
-                    gameState.logSpoonBorrowed();
-                }
+                detatchSpoon(true);
             }
+        }
+    }
+
+    public void detatchSpoon(boolean snapBack) {
+        target.removeSpoon(this);
+        setTarget(null, snapBack);
+        if (isBorrowed()) {
+            setVisible(false);
+            gameState.logSpoonBorrowed();
         }
     }
 
@@ -77,7 +81,11 @@ public class Spoon extends Image {
         @Override
         public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
             if (spoon.getTarget() != null) {
-                return null;
+                if (spoon.isBorrowed()) {
+                    // Can't drag a borrowed spoon
+                    return null;
+                }
+                spoon.detatchSpoon(false);
             }
             DragAndDrop.Payload payload = new DragAndDrop.Payload();
             payload.setDragActor(spoon);
@@ -89,7 +97,7 @@ public class Spoon extends Image {
             if (target == null) {
                 spoon.setPosition(spoon.getHomePosition().x, spoon.getHomePosition().y);
             } else if (target.getActor() instanceof Chore) {
-                spoon.setTarget((Chore) target.getActor());
+                spoon.setTarget((Chore) target.getActor(), true);
                 ((Chore) target.getActor()).addSpoon(spoon);
             }
             super.dragStop(event, x, y, pointer, payload, target);

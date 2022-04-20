@@ -8,10 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
+import com.me4502.tidyhomebound.game.actor.Smoke;
 import com.me4502.tidyhomebound.game.actor.Spoon;
 import com.me4502.tidyhomebound.game.actor.Toast;
 import com.me4502.tidyhomebound.game.actor.chore.Bed;
 import com.me4502.tidyhomebound.game.actor.chore.Bin;
+import com.me4502.tidyhomebound.game.actor.chore.Chore;
 import com.me4502.tidyhomebound.game.actor.chore.Desk;
 import com.me4502.tidyhomebound.game.actor.chore.Fridge;
 import com.me4502.tidyhomebound.game.actor.chore.ImageChore;
@@ -44,6 +46,7 @@ public class GameState {
     private final Group furnitureGroup;
     private final Group toastGroup;
     private final Group spoonGroup;
+    private final Group smokeGroup;
     private final AssetManager assetManager;
     private final TidyHomebound homebound;
     private final DragAndDrop dragAndDrop;
@@ -63,7 +66,9 @@ public class GameState {
     private final List<Spoon> spoonActors = new ArrayList<>();
     private final List<DragAndDrop.Source> dragAndDropSources = new ArrayList<>();
 
-    private Vacuum vacuumActor;
+    private final Vacuum vacuumActor;
+    private final Bed bedActor;
+    private final List<Chore> chores = new ArrayList<>();
 
     public GameState(TidyHomebound homebound, GameUI ui, Stage stage, AssetManager assetManager) {
         this.homebound = homebound;
@@ -81,7 +86,7 @@ public class GameState {
         stage.addActor(furnitureGroup = new Group());
         createFurniture(new PlantPot(assetManager, this, new Vector2(450, 300.5f)));
         createFurniture(new Bin(assetManager, this, new Vector2(429.5f, 226.5f)));
-        createFurniture(new Bed(assetManager, this, new Vector2(267, 224.5f)));
+        createFurniture(bedActor =new Bed(assetManager, this, new Vector2(267, 224.5f)));
         createFurniture(new Desk(assetManager, this, new Vector2(457, 135.5f)));
         createFurniture(new Sink(assetManager, this, new Vector2(128, 184.5f)));
         createFurniture(new Oven(assetManager, this, new Vector2(68, 160f)));
@@ -92,11 +97,13 @@ public class GameState {
         startNewDay();
 
         stage.addActor(toastGroup = new Group());
+        stage.addActor(smokeGroup = new Group());
     }
 
     private void createFurniture(ImageChore chore) {
         furnitureGroup.addActor(chore);
         dragAndDrop.addTarget(new ImageChoreDragTarget(chore));
+        chores.add(chore);
 
         if (DEBUG_MODE) {
             dragAndDrop.addSource(new DebugDragAndDropSource(chore));
@@ -128,6 +135,7 @@ public class GameState {
         spoonActors.clear();
         dragAndDropSources.forEach(dragAndDrop::removeSource);
         dragAndDropSources.clear();
+        chores.forEach(Chore::resetSpoons);
 
         // Add new actors
         int leftBound = (baseSpoons + baseEmergencySpoons) * (32 + 2);
@@ -226,6 +234,9 @@ public class GameState {
                 toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_POSITIVE), position));
             } else if (modifier < 0) {
                 toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_NEGATIVE), position));
+                if (selfCare < SELF_CARE_CRITICAL) {
+                    toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_NEGATIVE), bedActor.getToastPosition()));
+                }
             }
         }
     }
@@ -239,6 +250,10 @@ public class GameState {
         return selfCare;
     }
 
+    public List<Chore> getChores() {
+        return chores;
+    }
+
     public void modifySelfCare(double modifier, Vector2 position) {
         this.selfCare += modifier;
         this.selfCare = Math.max(0.0, Math.min(1.0, this.selfCare));
@@ -246,6 +261,13 @@ public class GameState {
         if (position != null && modifier > 0) {
             toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_SELFCARE_GAIN), position));
         }
+    }
+
+    public void addSmoke(ImageChore chore) {
+        smokeGroup.addActor(new Smoke(
+            assetManager.get(Assets.SMOKE),
+            chore.getToastPosition().cpy().add((float) ((Math.random() - 0.5) * chore.getWidth()), (float) ((Math.random() - 0.5) * chore.getHeight()))
+        ));
     }
 
     public void logSpoonBorrowed() {

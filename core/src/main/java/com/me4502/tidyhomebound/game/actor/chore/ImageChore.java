@@ -13,6 +13,7 @@ public class ImageChore extends Image implements Chore {
 
     private static final float BAD_CUTOFF = 0.3f;
     private static final float CRITICAL_CUTOFF = 0.7f;
+    private static final float SMOKE_CUTOFF = 1.0f; // Cannot get any worse
 
     protected final GameState gameState;
     private final ChoreAttributes attributes;
@@ -56,14 +57,17 @@ public class ImageChore extends Image implements Chore {
         timeSinceDamage += delta;
 
         if (assignedSpoons.isEmpty()) {
-            modifyUrgency(attributes.getFrequency() * delta * 0.1);
+            modifyUrgency(attributes.getFrequency() * delta * (0.6 + 0.02 * gameState.getDay()));
         }
 
         updateState();
 
         if (state == State.CRITICAL && timeSinceDamage >= 5) {
             timeSinceDamage = 0;
-            gameState.modifyHandling(-attributes.getImportance() * 0.1, getToastPosition());
+            gameState.modifyHandling(-attributes.getImportance() * (urgency >= SMOKE_CUTOFF ? 0.125 : 0.075), getToastPosition());
+        }
+        if (urgency >= SMOKE_CUTOFF && Math.random() > 0.85) {
+            gameState.addSmoke(this);
         }
     }
 
@@ -116,7 +120,7 @@ public class ImageChore extends Image implements Chore {
 
     @Override
     public void perform(Spoon spoon, float delta) {
-        modifyUrgency((-1.0 + attributes.getDifficulty()) * delta * 0.1);
+        modifyUrgency(-(1.0 - attributes.getDifficulty()) * delta * 0.1);
     }
 
     private void modifyUrgency(double amount) {

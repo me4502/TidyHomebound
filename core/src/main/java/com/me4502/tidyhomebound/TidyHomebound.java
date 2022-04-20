@@ -35,6 +35,10 @@ public class TidyHomebound extends Game {
 		super.render();
 	}
 
+	public GameUI getUi() {
+		return ui;
+	}
+
 	@Override
 	public void dispose() {
 		ui.dispose();
