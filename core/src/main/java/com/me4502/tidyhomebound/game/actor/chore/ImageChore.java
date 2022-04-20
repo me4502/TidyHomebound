@@ -57,7 +57,7 @@ public class ImageChore extends Image implements Chore {
         timeSinceDamage += delta;
 
         if (assignedSpoons.isEmpty()) {
-            modifyUrgency(attributes.getFrequency() * delta * (0.6 + 0.02 * gameState.getDay()));
+            modifyUrgency(attributes.getFrequency() * delta * (0.06 + 0.02 * gameState.getDay()));
         }
 
         updateState();

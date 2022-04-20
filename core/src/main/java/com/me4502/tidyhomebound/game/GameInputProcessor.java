@@ -3,7 +3,6 @@ package com.me4502.tidyhomebound.game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.me4502.tidyhomebound.TidyHomebound;
-import com.me4502.tidyhomebound.game.actor.chore.Chore;
 import com.me4502.tidyhomebound.ui.GameUI;
 import com.me4502.tidyhomebound.ui.dialog.PauseDialog;
 
@@ -33,6 +32,9 @@ public class GameInputProcessor extends InputAdapter {
                 return true;
             } else if (keycode == Input.Keys.NUM_3) {
                 gameState.getChores().forEach(chore -> chore.perform(null, 10));
+                return true;
+            } else if (keycode == Input.Keys.NUM_4) {
+                gameState.startNewDay();
                 return true;
             } else if (keycode == Input.Keys.EQUALS) {
                 gameState.update(10f);

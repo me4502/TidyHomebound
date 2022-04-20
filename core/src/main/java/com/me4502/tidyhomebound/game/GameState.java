@@ -34,7 +34,7 @@ import static com.me4502.tidyhomebound.TidyHomebound.DEBUG_MODE;
 
 public class GameState {
 
-    private final static double TWILIGHT_BRIGHTNESS = 0.5;
+    private final static double TWILIGHT_BRIGHTNESS = 0.3;
 
     private final static double SELF_CARE_LOW = 0.5;
     private final static double SELF_CARE_CRITICAL = 0.2;
