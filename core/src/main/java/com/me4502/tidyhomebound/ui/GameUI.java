@@ -48,7 +48,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         this.assetManager = assetManager;
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
-        this.roomRenderer = new RoomRenderer(assetManager);
+        this.roomRenderer = new RoomRenderer(assetManager, this);
 
         this.batch.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
         this.shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
@@ -66,7 +66,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     @Override
     public void show() {
         this.backgroundSprite = new Sprite(assetManager.get(Assets.BACKGROUND_BASE));
-        this.stage = new Stage(new StretchViewport(TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT), this.batch);
+        this.stage = new Stage(new StretchViewport(TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT));
 //        this.stage.setDebugAll(TidyHomebound.DEBUG_MODE);
 
         this.gameState = new GameState(homebound, this, stage, assetManager);
@@ -107,6 +107,9 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
             shapeRenderer.setColor(color);
             shapeRenderer.rect(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
             shapeRenderer.end();
+            shapeRenderer.setColor(Color.WHITE);
+
+            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }
 
@@ -175,4 +178,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         return this.dialog;
     }
 
+    public GameState getGameState() {
+        return gameState;
+    }
 }

@@ -2,19 +2,24 @@ package com.me4502.tidyhomebound.game;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 import com.me4502.tidyhomebound.game.actor.Spoon;
+import com.me4502.tidyhomebound.game.actor.Toast;
 import com.me4502.tidyhomebound.game.actor.chore.Bed;
+import com.me4502.tidyhomebound.game.actor.chore.Bin;
+import com.me4502.tidyhomebound.game.actor.chore.Desk;
 import com.me4502.tidyhomebound.game.actor.chore.Fridge;
 import com.me4502.tidyhomebound.game.actor.chore.ImageChore;
 import com.me4502.tidyhomebound.game.actor.chore.ImageChoreDragTarget;
 import com.me4502.tidyhomebound.game.actor.chore.Oven;
 import com.me4502.tidyhomebound.game.actor.chore.PlantPot;
 import com.me4502.tidyhomebound.game.actor.chore.Sink;
+import com.me4502.tidyhomebound.game.actor.chore.Vacuum;
 import com.me4502.tidyhomebound.ui.GameOverScreen;
 import com.me4502.tidyhomebound.ui.GameUI;
 import com.me4502.tidyhomebound.ui.dialog.EndOfDayDialog;
@@ -36,6 +41,9 @@ public class GameState {
     // Everything that is set for the whole game
     private final GameUI ui;
     private final Stage stage;
+    private final Group furnitureGroup;
+    private final Group toastGroup;
+    private final Group spoonGroup;
     private final AssetManager assetManager;
     private final TidyHomebound homebound;
     private final DragAndDrop dragAndDrop;
@@ -54,7 +62,8 @@ public class GameState {
 
     private final List<Spoon> spoonActors = new ArrayList<>();
     private final List<DragAndDrop.Source> dragAndDropSources = new ArrayList<>();
-    private final List<ImageChore> furnitureItems = new ArrayList<>();
+
+    private Vacuum vacuumActor;
 
     public GameState(TidyHomebound homebound, GameUI ui, Stage stage, AssetManager assetManager) {
         this.homebound = homebound;
@@ -69,19 +78,25 @@ public class GameState {
         baseEmergencySpoons = 2;
         dayLength = 60 * 2; // 2 minutes per day.
 
+        stage.addActor(furnitureGroup = new Group());
         createFurniture(new PlantPot(assetManager, this, new Vector2(450, 300.5f)));
+        createFurniture(new Bin(assetManager, this, new Vector2(429.5f, 226.5f)));
         createFurniture(new Bed(assetManager, this, new Vector2(267, 224.5f)));
+        createFurniture(new Desk(assetManager, this, new Vector2(457, 135.5f)));
         createFurniture(new Sink(assetManager, this, new Vector2(128, 184.5f)));
         createFurniture(new Oven(assetManager, this, new Vector2(68, 160f)));
         createFurniture(new Fridge(assetManager, this, new Vector2(5, 132.5f)));
+        createFurniture(vacuumActor = new Vacuum(assetManager, this, new Vector2(360, 58)));
 
+        stage.addActor(spoonGroup = new Group());
         startNewDay();
+
+        stage.addActor(toastGroup = new Group());
     }
 
     private void createFurniture(ImageChore chore) {
-        stage.addActor(chore);
+        furnitureGroup.addActor(chore);
         dragAndDrop.addTarget(new ImageChoreDragTarget(chore));
-        furnitureItems.add(chore);
 
         if (DEBUG_MODE) {
             dragAndDrop.addSource(new DebugDragAndDropSource(chore));
@@ -112,7 +127,7 @@ public class GameState {
         int leftBound = (baseSpoons + baseEmergencySpoons) * (32 + 2);
         for (int i = 0; i < spoons + baseEmergencySpoons; i++) {
             Spoon spoon = new Spoon(assetManager, this, new Vector2(TidyHomebound.GAME_WIDTH - 16 - (leftBound - (32 + 2) * i), TidyHomebound.GAME_HEIGHT - 137), i >= spoons);
-            stage.addActor(spoon);
+            spoonGroup.addActor(spoon);
             spoonActors.add(spoon);
             var dragAndDropSource = new Spoon.SpoonDragSource(spoon);
             dragAndDrop.addSource(dragAndDropSource);
@@ -197,7 +212,11 @@ public class GameState {
         this.handling = Math.max(0.0, Math.min(1.0, this.handling));
 
         if (position != null) {
-            // Show a popup thing
+            if (modifier > 0) {
+                toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_POSITIVE), position));
+            } else if (modifier < 0) {
+                toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_NEGATIVE), position));
+            }
         }
     }
 
@@ -214,12 +233,17 @@ public class GameState {
         this.selfCare += modifier;
         this.selfCare = Math.max(0.0, Math.min(1.0, this.selfCare));
 
-        if (position != null) {
-            // Show a popup thing
+        if (position != null && modifier > 0) {
+            toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_SELFCARE_GAIN), position));
         }
     }
 
     public void logSpoonBorrowed() {
         borrowedSpoons ++;
+    }
+
+    public ImageChore.State getFloorState() {
+        // The state of the floor is forwarded from the vacuum.
+        return vacuumActor.getState();
     }
 }

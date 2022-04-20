@@ -63,16 +63,20 @@ public class ImageChore extends Image implements Chore {
 
         if (state == State.CRITICAL && timeSinceDamage >= 5) {
             timeSinceDamage = 0;
-            gameState.modifyHandling(-attributes.getImportance() * 0.1, homePosition);
+            gameState.modifyHandling(-attributes.getImportance() * 0.1, getToastPosition());
         }
-    }
-
-    public float getUrgency() {
-        return this.urgency;
     }
 
     public Vector2 getHomePosition() {
         return this.homePosition;
+    }
+
+    public Vector2 getToastPosition() {
+        return homePosition.cpy().add(getWidth() / 2, getHeight() / 2);
+    }
+
+    public State getState() {
+        return state;
     }
 
     @Override
@@ -85,7 +89,7 @@ public class ImageChore extends Image implements Chore {
         return urgency >= BAD_CUTOFF;
     }
 
-    private void updateState() {
+    protected void updateState() {
         if (urgency > CRITICAL_CUTOFF) {
             if (state != State.CRITICAL) {
                 setDrawable(criticalTexture);
@@ -104,8 +108,10 @@ public class ImageChore extends Image implements Chore {
 
     @Override
     public void reward() {
-        gameState.modifySelfCare(attributes.getSelfCare(), homePosition);
-        gameState.modifyHandling(0.05, homePosition);
+        if (attributes.getSelfCare() != 0) {
+            gameState.modifySelfCare(attributes.getSelfCare(), getToastPosition().cpy().sub(0, 18));
+        }
+        gameState.modifyHandling(0.05, getToastPosition());
     }
 
     @Override
@@ -130,7 +136,7 @@ public class ImageChore extends Image implements Chore {
         assignedSpoons.clear();
     }
 
-    private enum State {
+    public enum State {
         GOOD,
         BAD,
         CRITICAL

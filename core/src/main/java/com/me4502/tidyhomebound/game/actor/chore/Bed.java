@@ -31,6 +31,11 @@ public class Bed extends ImageChore {
     }
 
     @Override
+    public Vector2 getToastPosition() {
+        return getHomePosition().cpy().add(getWidth() / 4, (getHeight() / 3) * 2);
+    }
+
+    @Override
     public void act(float delta) {
         timeSinceReward += delta;
 
@@ -41,14 +46,15 @@ public class Bed extends ImageChore {
             timeInBed += delta;
             if (timeSinceReward >= BED_REWARD_CUTOFF) {
                 timeSinceReward = 0;
-                gameState.modifySelfCare(0.1, getHomePosition());
+                gameState.modifySelfCare(0.05, getToastPosition());
             }
         }
 
         updateState();
     }
 
-    private void updateState() {
+    @Override
+    protected void updateState() {
         if (timeInBed > 0) {
             if (state != State.RESTING) {
                 setDrawable(restingTexture);

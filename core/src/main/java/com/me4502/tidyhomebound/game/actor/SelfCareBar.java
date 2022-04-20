@@ -48,9 +48,11 @@ public class SelfCareBar extends Actor {
 
         float scaleFactor = SCALE_FACTOR;
 
-        GlyphLayout layout = new GlyphLayout(font, "Self Care");
         font.setColor(Color.BLACK);
+        GlyphLayout layout = new GlyphLayout(font, "Self Care");
         font.draw(batch, layout, position.x + 5, position.y + layout.height + 20);
+
+        batch.setColor(Color.WHITE);
 
         emptyNinePatch.draw(
             batch,

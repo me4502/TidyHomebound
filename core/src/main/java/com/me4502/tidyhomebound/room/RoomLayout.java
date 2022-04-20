@@ -3,6 +3,7 @@ package com.me4502.tidyhomebound.room;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.me4502.tidyhomebound.Assets;
+import com.me4502.tidyhomebound.game.GameState;
 
 public class RoomLayout {
 
@@ -58,6 +59,25 @@ public class RoomLayout {
         }
 
         isSetup = true;
+    }
+
+    public void updateFloor(GameState gameState) {
+        for (var x = 0; x < width; x++) {
+            for (var y = 0; y < height; y++) {
+                var floorSprite = this.floor[x][y];
+                switch (gameState.getFloorState()) {
+                    case GOOD:
+                        floorSprite.setTexture(assetManager.get(Assets.FLOOR_BASE));
+                        break;
+                    case BAD:
+                        floorSprite.setTexture(assetManager.get(Assets.FLOOR_LIGHT_DIRT));
+                        break;
+                    case CRITICAL:
+                        floorSprite.setTexture(assetManager.get(Assets.FLOOR_HEAVY_DIRT));
+                        break;
+                }
+            }
+        }
     }
 
     public int getWidth() {
