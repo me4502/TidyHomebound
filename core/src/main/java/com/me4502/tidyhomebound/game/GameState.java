@@ -69,7 +69,7 @@ public class GameState {
         baseEmergencySpoons = 2;
         dayLength = 60 * 2; // 2 minutes per day.
 
-        createFurniture(new PlantPot(assetManager, this, new Vector2(60, 100)));
+        createFurniture(new PlantPot(assetManager, this, new Vector2(450, 300.5f)));
         createFurniture(new Bed(assetManager, this, new Vector2(267, 224.5f)));
         createFurniture(new Sink(assetManager, this, new Vector2(128, 184.5f)));
         createFurniture(new Oven(assetManager, this, new Vector2(68, 160f)));

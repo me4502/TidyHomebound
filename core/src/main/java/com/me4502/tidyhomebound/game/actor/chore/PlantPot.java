@@ -13,10 +13,10 @@ public class PlantPot extends ImageChore {
 
         setTextures(
             new TextureRegionDrawable(assetManager.get(Assets.PLANT_POT_GOOD)),
-            new TextureRegionDrawable(assetManager.get(Assets.PLANT_POT_GOOD)),
-            new TextureRegionDrawable(assetManager.get(Assets.PLANT_POT_GOOD))
+            new TextureRegionDrawable(assetManager.get(Assets.PLANT_POT_BAD)),
+            new TextureRegionDrawable(assetManager.get(Assets.PLANT_POT_CRITICAL))
         );
 
-        setSize(32, 32);
+        setSize(24, 48);
     }
 }

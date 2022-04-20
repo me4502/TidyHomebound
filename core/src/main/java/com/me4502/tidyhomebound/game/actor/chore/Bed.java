@@ -2,6 +2,7 @@ package com.me4502.tidyhomebound.game.actor.chore;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.game.GameState;
@@ -13,17 +14,20 @@ public class Bed extends ImageChore {
 
     private double timeInBed = 0;
     private double timeSinceReward = 0;
+    private State state = State.GOOD;
+
+    private final Drawable goodTexture;
+    private final Drawable restingTexture;
 
     public Bed(AssetManager assetManager, GameState gameState, Vector2 homePosition) {
         super(gameState, homePosition, new ChoreAttributes(0, 0, 0, 0));
 
-        setTextures(
-            new TextureRegionDrawable(assetManager.get(Assets.BED)),
-            new TextureRegionDrawable(assetManager.get(Assets.BED)),
-            new TextureRegionDrawable(assetManager.get(Assets.BED))
-        );
+        goodTexture = new TextureRegionDrawable(assetManager.get(Assets.BED));
+        restingTexture = new TextureRegionDrawable(assetManager.get(Assets.BED_RESTING));
 
-        setSize(192, 128);
+        setDrawable(goodTexture);
+
+        setSize(161, 95);
     }
 
     @Override
@@ -31,7 +35,7 @@ public class Bed extends ImageChore {
         timeSinceReward += delta;
 
         if (assignedSpoons.isEmpty()) {
-            timeInBed -= delta;
+            timeInBed -= delta / 2;
             timeInBed = Math.max(0, timeInBed);
         } else {
             timeInBed += delta;
@@ -39,6 +43,20 @@ public class Bed extends ImageChore {
                 timeSinceReward = 0;
                 gameState.modifySelfCare(0.1, getHomePosition());
             }
+        }
+
+        updateState();
+    }
+
+    private void updateState() {
+        if (timeInBed > 0) {
+            if (state != State.RESTING) {
+                setDrawable(restingTexture);
+                state = State.RESTING;
+            }
+        } else if (state != State.GOOD) {
+            setDrawable(goodTexture);
+            state = State.GOOD;
         }
     }
 
@@ -60,5 +78,10 @@ public class Bed extends ImageChore {
     @Override
     public boolean canPerform() {
         return timeInBed == 0;
+    }
+
+    private enum State {
+        GOOD,
+        RESTING
     }
 }

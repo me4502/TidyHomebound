@@ -12,6 +12,7 @@ public class Assets {
     public static final AssetDescriptor<Texture> FLOOR_BASE = new AssetDescriptor<>("tiles/floor_base.png", Texture.class);
 
     public static final AssetDescriptor<Texture> WALL_BASE = new AssetDescriptor<>("tiles/wall_base.png", Texture.class);
+    public static final AssetDescriptor<Texture> WALL_WINDOW = new AssetDescriptor<>("tiles/wall_window.png", Texture.class);
     public static final AssetDescriptor<Texture> DOOR_BASE = new AssetDescriptor<>("tiles/door_base.png", Texture.class);
 
     public static final AssetDescriptor<Texture> BACKGROUND_BASE = new AssetDescriptor<>("tiles/background_base.png", Texture.class);
@@ -29,6 +30,8 @@ public class Assets {
 
     // Furniture
     public static final AssetDescriptor<Texture> PLANT_POT_GOOD = new AssetDescriptor<>("furniture/plant_pot_good.png", Texture.class);
+    public static final AssetDescriptor<Texture> PLANT_POT_BAD = new AssetDescriptor<>("furniture/plant_pot_bad.png", Texture.class);
+    public static final AssetDescriptor<Texture> PLANT_POT_CRITICAL = new AssetDescriptor<>("furniture/plant_pot_critical.png", Texture.class);
 
     public static final AssetDescriptor<Texture> FRIDGE_GOOD = new AssetDescriptor<>("furniture/fridge_good.png", Texture.class);
     public static final AssetDescriptor<Texture> FRIDGE_BAD = new AssetDescriptor<>("furniture/fridge_bad.png", Texture.class);
@@ -43,6 +46,7 @@ public class Assets {
     public static final AssetDescriptor<Texture> OVEN_CRITICAL = new AssetDescriptor<>("furniture/oven_critical.png", Texture.class);
 
     public static final AssetDescriptor<Texture> BED = new AssetDescriptor<>("furniture/bed.png", Texture.class);
+    public static final AssetDescriptor<Texture> BED_RESTING = new AssetDescriptor<>("furniture/bed_resting.png", Texture.class);
 
     // Fonts
     public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.16.fnt", BitmapFont.class);
@@ -55,6 +59,7 @@ public class Assets {
     public static void loadGameAssets(AssetManager assetManager) {
         assetManager.load(FLOOR_BASE);
         assetManager.load(WALL_BASE);
+        assetManager.load(WALL_WINDOW);
         assetManager.load(DOOR_BASE);
         assetManager.load(BACKGROUND_BASE);
         assetManager.load(SPOON);
@@ -67,6 +72,8 @@ public class Assets {
         assetManager.load(CLOCK_HAND);
 
         assetManager.load(PLANT_POT_GOOD);
+        assetManager.load(PLANT_POT_BAD);
+        assetManager.load(PLANT_POT_CRITICAL);
         assetManager.load(FRIDGE_GOOD);
         assetManager.load(FRIDGE_BAD);
         assetManager.load(FRIDGE_CRITICAL);
@@ -78,6 +85,7 @@ public class Assets {
         assetManager.load(OVEN_CRITICAL);
 
         assetManager.load(BED);
+        assetManager.load(BED_RESTING);
     }
 
     /**

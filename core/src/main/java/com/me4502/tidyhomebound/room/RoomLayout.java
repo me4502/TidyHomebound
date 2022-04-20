@@ -42,7 +42,7 @@ public class RoomLayout {
         }
 
         for (var x = 0; x < width; x++) {
-            var wallSprite = new Sprite(assetManager.get(Assets.WALL_BASE));
+            var wallSprite = new Sprite(assetManager.get(x == 2 ? Assets.WALL_WINDOW : Assets.WALL_BASE));
             wallSprite.setSize(1, WALL_HEIGHT);
             wallSprite.setPosition(x, -WALL_HEIGHT);
             wallSprite.flip(false, true);
