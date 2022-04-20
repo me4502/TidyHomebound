@@ -1,30 +1,26 @@
 # TidyHomebound
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff).
+## A spoon theory life management game made for LudumDare 50
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+The theme of this LudumDare was 'Delay the inevitable'. TidyHomebound is a time management strategy game where the player manages everyday household chores. For people with disabilities, especially those that impact energy or mobility, completing these tasks can be a daunting task. To some, it can feel like everything is piling up at an unstoppable rate, and by doing the chores they're just delaying the inevitable.
 
-## Gradle
+This game adapts the concept of [Spoon Theory](https://en.wikipedia.org/wiki/Spoon_theory) to represent energy to do tasks. The player starts the day with a few spoons, as well as a small number of emergency spoons they can use if they really need to. The ability to do tasks is heavily limited by available spoons, and the actions you make one day might have an impact on how many spoons you have for the next.
 
-This project uses [Gradle](http://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+The game requires you to balance a limited number of spoons, an array of household tasks, and the need to perform self-care, as well as making trade-offs about how what you do today will affect what you can do tomorrow.
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `html:dist`: compiles GWT sources. The compiled application can be found at `html/build/dist`: you can use any HTTP server to deploy it.
-- `html:superDev`: compiles GWT sources and runs the application in SuperDev mode. It will be available at [localhost:8080/html](http://localhost:8080/html). Use only during development.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+**How to Play:**
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+* Drag spoons to chores that need doing to do them
+* Drag a spoon to the player in the bed to gain Self Care
+* Multiple spoons can be placed on one chore to go faster
+* Red spoons are Emergency Spoons, they can each be used once per day and reduce your spoon count by 1 the following day when used
+* If chores go undone for too long they start affecting your coping bar; the longer you leave it the more it will take
+* If your self care is below half, you lose coping points faster and start with less spoons the following day
+
+[Homepage](https://madelinemiller.dev/game/tidyhomebound/) | [Play Online](https://madelinemiller.dev/game/tidyhomebound/play/)
+
+See [CREDITS.txt](./CREDITS.txt) for a list of assets and creators used in this project.
+
+**Technical Details:**
+
+* Written with LibGDX
