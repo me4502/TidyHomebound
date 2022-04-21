@@ -49,6 +49,8 @@ public class LoadingUI extends ScreenAdapter {
         int dots = (int) (System.currentTimeMillis() / 1000 % 4);
 
         batch.begin();
+        batch.draw(assetManager.get(Assets.LOGO), TidyHomebound.GAME_WIDTH / 2.0f - 136.5f, TidyHomebound.GAME_HEIGHT / 2.0f + 128);
+
         BitmapFont font = assetManager.get(Assets.DOGICA);
         font.setColor(Color.WHITE);
         GlyphLayout layout = new GlyphLayout(font, "Loading...");

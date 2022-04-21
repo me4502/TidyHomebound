@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -44,7 +44,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     private Stage stage;
 
     private Sprite backgroundSprite;
-    private Music backgroundMusic;
+    private Sound backgroundMusic;
 
     public GameUI(TidyHomebound homebound, AssetManager assetManager) {
         this.homebound = homebound;
@@ -80,10 +80,11 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
 
         setDialog(new StartDialog(this));
 
+        if (this.backgroundMusic != null) {
+            this.backgroundMusic.stop();
+        }
         this.backgroundMusic = assetManager.get(Assets.BACKGROUND_MUSIC);
-        this.backgroundMusic.setVolume(0.7f);
-        this.backgroundMusic.setLooping(true);
-        this.backgroundMusic.play();
+        this.backgroundMusic.loop(0.6f);
     }
 
     @Override
@@ -131,6 +132,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
             // Do not update while a dialog is up.
             gameState.update(delta);
             if (!gameState.isAlive()) {
+                backgroundMusic.stop();
                 homebound.setScreen(new GameOverScreen(homebound, assetManager, gameState));
                 return;
             }

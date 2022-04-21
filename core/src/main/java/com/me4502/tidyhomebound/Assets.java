@@ -2,7 +2,7 @@ package com.me4502.tidyhomebound;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -24,6 +24,8 @@ public class Assets {
     public static final AssetDescriptor<Texture> SPOON = new AssetDescriptor<>("icons/spoon.png", Texture.class);
     public static final AssetDescriptor<Texture> BORROWED_SPOON = new AssetDescriptor<>("icons/borrowed_spoon.png", Texture.class);
     public static final AssetDescriptor<Texture> SMOKE = new AssetDescriptor<>("icons/smoke.png", Texture.class);
+
+    public static final AssetDescriptor<Texture> LOGO = new AssetDescriptor<>("icons/logo.png", Texture.class);
 
     // UI
     public static final AssetDescriptor<TextureAtlas> DIALOG = new AssetDescriptor<>("ui/dialog.9.atlas", TextureAtlas.class);
@@ -69,7 +71,7 @@ public class Assets {
     public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.16.fnt", BitmapFont.class);
 
     // Audio
-    public static final AssetDescriptor<Music> BACKGROUND_MUSIC = new AssetDescriptor<>("audio/safe_at_home.ogg", Music.class);
+    public static final AssetDescriptor<Sound> BACKGROUND_MUSIC = new AssetDescriptor<>("audio/safe_at_home.ogg", Sound.class);
 
     /**
      * Triggers loads of any assets needed by the game.
@@ -132,6 +134,7 @@ public class Assets {
      */
     public static void loadImmediateAssets(AssetManager assetManager) {
         assetManager.load(DOGICA);
+        assetManager.load(LOGO);
 
         assetManager.finishLoading();
     }

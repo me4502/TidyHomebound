@@ -17,6 +17,8 @@ public class StartDialog extends Dialog {
     @Override
     public void render(SpriteBatch batch, AssetManager assetManager) {
         batch.begin();
+        batch.draw(assetManager.get(Assets.LOGO), TidyHomebound.GAME_WIDTH / 2.0f - 136.5f, TidyHomebound.GAME_HEIGHT / 2.0f + 128);
+
         BitmapFont font = assetManager.get(Assets.DOGICA);
         font.setColor(Color.WHITE);
         GlyphLayout layout = new GlyphLayout(font, "Click to Start");
