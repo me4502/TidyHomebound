@@ -1,6 +1,7 @@
 package com.me4502.tidyhomebound.room;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.game.GameState;
@@ -9,6 +10,8 @@ public class RoomLayout {
 
     // Walls are on average 2.6 metres tall.
     public static final float WALL_HEIGHT = 2.6F;
+    private final Color leftWallColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+    private final Color rightWallColor = new Color(0.8f, 0.8f, 0.8f, 1f);
 
     private final Sprite[][] floor;
     private final Sprite[] leftWall;
@@ -47,6 +50,8 @@ public class RoomLayout {
             wallSprite.setSize(1, WALL_HEIGHT);
             wallSprite.setPosition(x, -WALL_HEIGHT);
             wallSprite.flip(false, true);
+            wallSprite.setColor(rightWallColor);
+
             this.rightWall[x] = wallSprite;
         }
 
@@ -55,6 +60,8 @@ public class RoomLayout {
             wallSprite.setSize(1, WALL_HEIGHT);
             wallSprite.setPosition(x - height, -WALL_HEIGHT);
             wallSprite.flip(false, true);
+            wallSprite.setColor(leftWallColor);
+
             this.leftWall[x] = wallSprite;
         }
 

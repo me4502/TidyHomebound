@@ -16,6 +16,6 @@ public class Fridge extends ImageChore {
             new TextureRegionDrawable(assetManager.get(Assets.FRIDGE_CRITICAL))
         );
 
-        setSize(128, 192);
+        setSize(128, 176);
     }
 }
