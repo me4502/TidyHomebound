@@ -96,11 +96,15 @@ public class ImageChore extends Image implements Chore {
     protected void updateState() {
         if (urgency > CRITICAL_CUTOFF) {
             if (state != State.CRITICAL) {
+                gameState.addSpark(this);
                 setDrawable(criticalTexture);
                 state = State.CRITICAL;
             }
         } else if (urgency > BAD_CUTOFF) {
             if (state != State.BAD) {
+                if (state == State.GOOD) {
+                    gameState.addSpark(this);
+                }
                 setDrawable(badTexture);
                 state = State.BAD;
             }

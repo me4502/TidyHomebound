@@ -24,6 +24,7 @@ public class Assets {
     public static final AssetDescriptor<Texture> SPOON = new AssetDescriptor<>("icons/spoon.png", Texture.class);
     public static final AssetDescriptor<Texture> BORROWED_SPOON = new AssetDescriptor<>("icons/borrowed_spoon.png", Texture.class);
     public static final AssetDescriptor<Texture> SMOKE = new AssetDescriptor<>("icons/smoke.png", Texture.class);
+    public static final AssetDescriptor<Texture> SPARK = new AssetDescriptor<>("icons/spark.png", Texture.class);
 
     public static final AssetDescriptor<Texture> LOGO = new AssetDescriptor<>("icons/logo.png", Texture.class);
 
@@ -97,6 +98,7 @@ public class Assets {
         assetManager.load(CLOCK);
         assetManager.load(CLOCK_HAND);
         assetManager.load(SMOKE);
+        assetManager.load(SPARK);
 
         assetManager.load(PLANT_POT_GOOD);
         assetManager.load(PLANT_POT_BAD);

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 import com.me4502.tidyhomebound.game.actor.Smoke;
+import com.me4502.tidyhomebound.game.actor.Spark;
 import com.me4502.tidyhomebound.game.actor.Spoon;
 import com.me4502.tidyhomebound.game.actor.Toast;
 import com.me4502.tidyhomebound.game.actor.chore.Bed;
@@ -268,6 +269,19 @@ public class GameState {
             assetManager.get(Assets.SMOKE),
             chore.getToastPosition().cpy().add((float) ((Math.random() - 0.5) * chore.getWidth()), (float) ((Math.random() - 0.5) * chore.getHeight()))
         ));
+    }
+
+    public void addSpark(ImageChore chore) {
+        int sparks = 10;
+        if (chore.getHeight() * chore.getWidth() < 128*128) {
+            sparks = 3;
+        }
+        for (var i = 0; i < sparks; i++) {
+            particleGroup.addActor(new Spark(
+                assetManager.get(Assets.SPARK),
+                chore.getToastPosition().cpy().add((float) ((Math.random() - 0.5) * chore.getWidth() / 2), (float) ((Math.random() - 0.5) * chore.getHeight() / 2))
+            ));
+        }
     }
 
     public void logSpoonBorrowed() {
