@@ -59,7 +59,7 @@ public class EndOfDayDialog extends Dialog {
         table.add(new Label("Spoons Available Tomorrow: " + gameState.getNextSpoons(), new Label.LabelStyle(assetManager.get(Assets.DOGICA), Color.BLACK))).left().growY().padBottom(200);
 
         table.row().bottom();
-        var button = new TextButton("Continue", new TextButton.TextButtonStyle(new NinePatchDrawable(assetManager.get(Assets.DIALOG).createPatch("dialog")), null, null, assetManager.get(Assets.DOGICA)));
+        var button = new TextButton("Continue", new TextButton.TextButtonStyle(new NinePatchDrawable(assetManager.get(Assets.BUTTON).createPatch("button")), null, null, assetManager.get(Assets.DOGICA)));
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

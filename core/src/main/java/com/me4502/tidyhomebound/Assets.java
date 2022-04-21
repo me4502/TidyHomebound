@@ -29,6 +29,7 @@ public class Assets {
 
     // UI
     public static final AssetDescriptor<TextureAtlas> DIALOG = new AssetDescriptor<>("ui/dialog.9.atlas", TextureAtlas.class);
+    public static final AssetDescriptor<TextureAtlas> BUTTON = new AssetDescriptor<>("ui/button.9.atlas", TextureAtlas.class);
     public static final AssetDescriptor<TextureAtlas> COPING_BAR_FULL = new AssetDescriptor<>("ui/coping_bar_full.9.atlas", TextureAtlas.class);
     public static final AssetDescriptor<TextureAtlas> COPING_BAR_EMPTY = new AssetDescriptor<>("ui/coping_bar_empty.9.atlas", TextureAtlas.class);
     public static final AssetDescriptor<Texture> CLOCK = new AssetDescriptor<>("ui/clock.png", Texture.class);
@@ -90,6 +91,7 @@ public class Assets {
         assetManager.load(BORROWED_SPOON);
 
         assetManager.load(DIALOG);
+        assetManager.load(BUTTON);
         assetManager.load(COPING_BAR_FULL);
         assetManager.load(COPING_BAR_EMPTY);
         assetManager.load(CLOCK);
