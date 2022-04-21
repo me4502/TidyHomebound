@@ -89,7 +89,7 @@ public class GameState {
         createFurniture(new Bin(assetManager, this, new Vector2(429.5f, 226.5f)));
         createFurniture(bedActor =new Bed(assetManager, this, new Vector2(267, 224.5f)));
         createFurniture(new Desk(assetManager, this, new Vector2(457, 135.5f)));
-        createFurniture(new Sink(assetManager, this, new Vector2(128, 184.5f)));
+        createFurniture(new Sink(assetManager, this, new Vector2(128, 187f)));
         createFurniture(new Oven(assetManager, this, new Vector2(68, 160f)));
         createFurniture(new Fridge(assetManager, this, new Vector2(5, 132.5f)));
         createFurniture(vacuumActor = new Vacuum(assetManager, this, new Vector2(360, 58)));

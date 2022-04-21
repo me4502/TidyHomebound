@@ -16,6 +16,6 @@ public class Sink extends ImageChore {
             new TextureRegionDrawable(assetManager.get(Assets.SINK_CRITICAL))
         );
 
-        setSize(128, 128);
+        setSize(128, 125);
     }
 }

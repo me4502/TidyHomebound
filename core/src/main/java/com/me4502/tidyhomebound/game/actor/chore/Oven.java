@@ -16,6 +16,6 @@ public class Oven extends ImageChore {
             new TextureRegionDrawable(assetManager.get(Assets.OVEN_CRITICAL))
         );
 
-        setSize(128, 128);
+        setSize(117, 128);
     }
 }
