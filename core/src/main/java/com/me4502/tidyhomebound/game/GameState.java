@@ -46,7 +46,7 @@ public class GameState {
     private final Group furnitureGroup;
     private final Group toastGroup;
     private final Group spoonGroup;
-    private final Group smokeGroup;
+    private final Group particleGroup;
     private final AssetManager assetManager;
     private final TidyHomebound homebound;
     private final DragAndDrop dragAndDrop;
@@ -97,7 +97,7 @@ public class GameState {
         startNewDay();
 
         stage.addActor(toastGroup = new Group());
-        stage.addActor(smokeGroup = new Group());
+        stage.addActor(particleGroup = new Group());
     }
 
     private void createFurniture(ImageChore chore) {
@@ -264,7 +264,7 @@ public class GameState {
     }
 
     public void addSmoke(ImageChore chore) {
-        smokeGroup.addActor(new Smoke(
+        particleGroup.addActor(new Smoke(
             assetManager.get(Assets.SMOKE),
             chore.getToastPosition().cpy().add((float) ((Math.random() - 0.5) * chore.getWidth()), (float) ((Math.random() - 0.5) * chore.getHeight()))
         ));

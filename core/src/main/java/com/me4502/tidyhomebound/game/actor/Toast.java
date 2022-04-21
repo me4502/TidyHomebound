@@ -8,12 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Toast extends Image {
 
+    private static final float TOAST_DURATION = 3f;
+    private static final float FADE_DELAY = 1f;
+
     public Toast(Texture texture, Vector2 position) {
         super(texture);
 
         setTouchable(Touchable.disabled);
         setPosition(position.x - getWidth() / 2, position.y - getHeight() / 2);
-        addAction(Actions.moveBy(0, 100, 2f));
-        addAction(Actions.sequence(Actions.fadeOut(2f), Actions.removeActor(this)));
+        addAction(Actions.moveBy(0, 100, TOAST_DURATION));
+        addAction(Actions.sequence(Actions.delay(FADE_DELAY), Actions.fadeOut(TOAST_DURATION - FADE_DELAY), Actions.removeActor(this)));
     }
 }

@@ -78,13 +78,14 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         stage.addActor(new CopingBar(assetManager, gameState, new Vector2(18, TidyHomebound.GAME_HEIGHT - 50), TidyHomebound.GAME_WIDTH - 205, 32));
         stage.addActor(new SelfCareBar(assetManager, gameState, new Vector2(18, TidyHomebound.GAME_HEIGHT - 125), 250, 32));
 
-        setDialog(new StartDialog(this));
-
-        if (this.backgroundMusic != null) {
-            this.backgroundMusic.stop();
-        }
-        this.backgroundMusic = assetManager.get(Assets.BACKGROUND_MUSIC);
-        this.backgroundMusic.loop(0.6f);
+        setDialog(new StartDialog(this, startDialog -> {
+            if (backgroundMusic != null) {
+                backgroundMusic.stop();
+            }
+            backgroundMusic = assetManager.get(Assets.BACKGROUND_MUSIC);
+            backgroundMusic.stop();
+            backgroundMusic.loop(0.6f);
+        }));
     }
 
     @Override

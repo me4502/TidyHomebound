@@ -9,9 +9,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 
+import java.util.function.Consumer;
+
 public class StartDialog extends Dialog {
-    public StartDialog(DialogHolder parent) {
+
+    private final Consumer<StartDialog> callback;
+
+    public StartDialog(DialogHolder parent, Consumer<StartDialog> callback) {
         super(parent);
+
+        this.callback = callback;
     }
 
     @Override
@@ -43,6 +50,7 @@ public class StartDialog extends Dialog {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        callback.accept(this);
         this.parent.setDialog(null);
         return true;
     }
