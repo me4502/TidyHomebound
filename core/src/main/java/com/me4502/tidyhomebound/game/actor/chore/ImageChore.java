@@ -54,7 +54,6 @@ public class ImageChore extends Image implements Chore {
     @Override
     public void act(float delta) {
         super.act(delta);
-        timeSinceDamage += delta;
 
         if (assignedSpoons.isEmpty()) {
             modifyUrgency(attributes.getFrequency() * delta * (0.06 + 0.02 * gameState.getDay()));
@@ -62,11 +61,14 @@ public class ImageChore extends Image implements Chore {
 
         updateState();
 
-        if (state == State.CRITICAL && timeSinceDamage >= 5) {
-            timeSinceDamage = 0;
-            gameState.modifyHandling(-attributes.getImportance() * (urgency >= SMOKE_CUTOFF ? 0.125 : 0.075), getToastPosition());
+        if (state == State.CRITICAL) {
+            timeSinceDamage += delta;
+            if (timeSinceDamage >= 5) {
+                timeSinceDamage = 0;
+                gameState.modifyHandling(-attributes.getImportance() * (urgency >= SMOKE_CUTOFF ? 0.125 : 0.075), getToastPosition());
+            }
         }
-        if (urgency >= SMOKE_CUTOFF && Math.random() > 0.85) {
+        if (urgency >= SMOKE_CUTOFF && Math.random() > 0.9) {
             gameState.addSmoke(this);
         }
     }

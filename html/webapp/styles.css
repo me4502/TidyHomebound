@@ -3,8 +3,17 @@ canvas {
     outline: none;
 }
 
+html {
+    margin: 0;
+}
+
 body {
+    margin: 0;
     background-color: #222222;
+}
+
+div {
+    margin: 0;
 }
 
 p {

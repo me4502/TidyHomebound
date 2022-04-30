@@ -272,9 +272,9 @@ public class GameState {
     }
 
     public void addSpark(ImageChore chore) {
-        int sparks = 10;
+        int sparks = 8;
         if (chore.getHeight() * chore.getWidth() < 128*128) {
-            sparks = 3;
+            sparks = 2;
         }
         for (var i = 0; i < sparks; i++) {
             particleGroup.addActor(new Spark(
