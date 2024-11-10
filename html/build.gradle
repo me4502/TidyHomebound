@@ -4,7 +4,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.gretty:gretty:3.0.7"
+        classpath 'org.gretty:gretty:3.1.0'
+        classpath "org.docstr:gwt-gradle-plugin:$gwtPluginVersion"
+
     }
 }
 apply plugin: "gwt"
@@ -23,33 +25,28 @@ gwt {
 
     compiler.strict = true
     compiler.disableCastChecking = true
-    sourceLevel = 1.11
     //// The next line can be useful to uncomment if you want output that hasn't been obfuscated.
-//	compiler.style = org.wisepersist.gradle.plugins.gwt.Style.DETAILED
+//  compiler.style = org.docstr.gradle.plugins.gwt.Style.DETAILED
+
+    sourceLevel = 1.11
 }
 
 dependencies {
-//	implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-//	implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-
-    implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
     implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion:sources"
-    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-gwt:$gdxControllersVersion:sources"
+    implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
     implementation project(':core')
+    implementation("com.badlogicgames.gdx-controllers:gdx-controllers-gwt:$gdxControllersVersion:sources"){exclude group: "com.badlogicgames.gdx", module: "gdx-backend-gwt"}
 
-//// You can use the lines below instead of the "com.badlogicgames.gdx:gdx-backend-gwt" dependencies.
-//// If you do, follow the steps at https://github.com/tommyettinger/gdx-backends#gwt-290-support
-//// and you can use GWT 2.9.0, which gives you access to Java 11 language features.
-    implementation "com.github.tommyettinger:gdx-backend-gwt:1.1210.0"
-    implementation "com.github.tommyettinger:gdx-backend-gwt:1.1210.0:sources"
-    implementation "com.google.jsinterop:jsinterop-annotations:2.0.0:sources"
 }
 
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 import org.docstr.gradle.plugins.gwt.GwtSuperDev
 
 gretty.httpPort = 8080
-gretty.resourceBase = project.buildDir.path + "/gwt/draftOut"
+// The line below will need to be changed only if you change the build directory to something other than "build".
+gretty.resourceBase = "${project.layout.buildDirectory.asFile.get().absolutePath}/gwt/draftOut"
 gretty.contextPath = "/"
 gretty.portPropertiesFileName = "TEMP_PORTS.properties"
 
@@ -82,6 +79,11 @@ task superDev(type: GwtSuperDev) {
         gwt.modules = gwt.devModules
     }
 }
+
+//// We delete the (temporary) war/ folder because if any extra files get into it, problems occur.
+//// The war/ folder shouldn't be committed to version control.
+clean.delete += [file("war")]
+
 // This next line can be changed if you want to, for instance, always build into the
 // docs/ folder of a Git repo, which can be set to automatically publish on GitHub Pages.
 // This is relative to the html/ folder.
@@ -109,16 +111,18 @@ task dist(dependsOn: [clean, compileGwt]) {
                 exclude 'refresh.png' // We don't need this button; this saves some bytes.
             }
             into outputPath
-            }
+        }
         copy {
             from("webapp") {
                 // These next two lines take the index.html page and remove the superdev refresh button.
                 include 'index.html'
                 filter { String line -> line.replaceAll('<a class="superdev" .+', '') }
                 // This does not modify the original index.html, only the copy in the dist.
+                // If you decide to manually remove or comment out the superdev button from index.html, you should also
+                // either remove or comment out only the "filter" line above this.
             }
             into outputPath
-            }
+        }
         copy {
             from "war"
             into outputPath
@@ -129,25 +133,26 @@ task dist(dependsOn: [clean, compileGwt]) {
 task addSource {
     doLast {
         sourceSets.main.compileClasspath += files(project(':core').sourceSets.main.allJava.srcDirs)
-        
+        sourceSets.main.compileClasspath += files("../core/build/generated/sources/annotationProcessor/java/main")
+
     }
 }
 
 task distZip(type: Zip, dependsOn: dist){
-    //// This uses the output of the dist task, which removes the superdev buttons from index.html .
+    //// This uses the output of the dist task, which removes the superdev button from index.html .
     from(outputPath)
+    archiveVersion = projectVersion
     archiveBaseName.set("${appName}-dist")
     //// The result will be in html/build/ with a name containing "-dist".
-    destinationDir(file("build"))
+    destinationDirectory.set(file("build"))
 }
 
 tasks.compileGwt.dependsOn(addSource)
 tasks.draftCompileGwt.dependsOn(addSource)
 tasks.checkGwt.dependsOn(addSource)
-checkGwt.war = file("war")
 
-// You can change the version below to JavaVersion.VERSION_11 if you use the 2.9.0 backend.
-sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_11
+java.targetCompatibility = JavaVersion.VERSION_11
 sourceSets.main.java.srcDirs = [ "src/main/java/" ]
 
 eclipse.project.name = appName + "-html"

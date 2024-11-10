@@ -132,11 +132,17 @@ public class GameState {
         borrowedSpoons = 0; // Reset borrowed spoons
 
         // Reset actors
-        spoonActors.forEach(spoon -> spoon.addAction(Actions.removeActor()));
+        for (Spoon spoonActor : spoonActors) {
+            spoonActor.addAction(Actions.removeActor());
+        }
         spoonActors.clear();
-        dragAndDropSources.forEach(dragAndDrop::removeSource);
+        for (DragAndDrop.Source source : dragAndDropSources) {
+            dragAndDrop.removeSource(source);
+        }
         dragAndDropSources.clear();
-        chores.forEach(Chore::resetSpoons);
+        for (Chore chore : chores) {
+            chore.resetSpoons();
+        }
 
         // Add new actors
         int leftBound = (baseSpoons + baseEmergencySpoons) * (32 + 2);

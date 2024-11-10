@@ -8,8 +8,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
-
-import java.util.function.Consumer;
+import com.me4502.tidyhomebound.util.Consumer;
 
 public class StartDialog extends Dialog {
 
