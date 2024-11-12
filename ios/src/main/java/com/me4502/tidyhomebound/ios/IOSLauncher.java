@@ -13,7 +13,6 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration configuration = new IOSApplicationConfiguration();
-        configuration.hdpiMode = HdpiMode.Pixels;
         return new IOSApplication(new TidyHomebound(), configuration);
     }
 
