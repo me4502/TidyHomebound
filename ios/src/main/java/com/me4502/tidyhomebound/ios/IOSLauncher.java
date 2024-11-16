@@ -1,6 +1,5 @@
 package com.me4502.tidyhomebound.ios;
 
-import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
