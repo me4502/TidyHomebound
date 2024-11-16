@@ -1,5 +1,6 @@
 package com.me4502.tidyhomebound.game.actor;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -68,7 +69,14 @@ public class CopingBar extends Actor {
         );
         batch.flush();
 
-        if (ScissorStack.pushScissors(new Rectangle(position.x * TidyHomebound.GLOBAL_SCALE, (position.y - 16) * TidyHomebound.GLOBAL_SCALE, ((float) (width * gameState.getHandling())) * TidyHomebound.GLOBAL_SCALE, height * TidyHomebound.GLOBAL_SCALE))) {
+        Rectangle scissorRectangle = new Rectangle(
+                position.x * TidyHomebound.GLOBAL_SCALE,
+                0, // (position.y - 16) * TidyHomebound.GLOBAL_SCALE,
+                ((float) (width * gameState.getHandling())) * TidyHomebound.GLOBAL_SCALE,
+                Gdx.graphics.getHeight() // height * TidyHomebound.GLOBAL_SCALE
+        );
+
+        if (ScissorStack.pushScissors(scissorRectangle)) {
             fullNinePatch.draw(
                 batch,
                 position.x,
