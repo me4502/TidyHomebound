@@ -1,5 +1,7 @@
 package com.me4502.tidyhomebound;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -73,7 +75,12 @@ public class Assets {
     public static final AssetDescriptor<BitmapFont> DOGICA = new AssetDescriptor<>("fonts/dogica.16.fnt", BitmapFont.class);
 
     // Audio
-    public static final AssetDescriptor<Sound> BACKGROUND_MUSIC = new AssetDescriptor<>("audio/safe_at_home.ogg", Sound.class);
+    private static final AssetDescriptor<Sound> BACKGROUND_MUSIC_OGG = new AssetDescriptor<>("audio/safe_at_home.ogg", Sound.class);
+    private static final AssetDescriptor<Sound> BACKGROUND_MUSIC_MP3 = new AssetDescriptor<>("audio/safe_at_home.mp3", Sound.class);
+
+    public static AssetDescriptor<Sound> getBackgroundMusic() {
+        return Gdx.app.getType() == Application.ApplicationType.iOS ? BACKGROUND_MUSIC_MP3 : BACKGROUND_MUSIC_OGG;
+    }
 
     /**
      * Triggers loads of any assets needed by the game.
@@ -128,7 +135,7 @@ public class Assets {
         assetManager.load(TOAST_POSITIVE);
         assetManager.load(TOAST_NEGATIVE);
 
-        assetManager.load(BACKGROUND_MUSIC);
+        assetManager.load(getBackgroundMusic());
     }
 
     /**

@@ -82,7 +82,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
             if (backgroundMusic != null) {
                 backgroundMusic.stop();
             }
-            backgroundMusic = assetManager.get(Assets.BACKGROUND_MUSIC);
+            backgroundMusic = assetManager.get(Assets.getBackgroundMusic());
             backgroundMusic.stop();
             backgroundMusic.loop(0.6f);
         }));
