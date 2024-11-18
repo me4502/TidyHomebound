@@ -17,7 +17,7 @@ public class GameInputProcessor extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.PAUSE) {
+        if ((keycode == Input.Keys.ESCAPE || keycode == Input.Keys.PAUSE) && ui.getDialog() == null) {
             ui.setDialog(new PauseDialog(ui));
             return true;
         }

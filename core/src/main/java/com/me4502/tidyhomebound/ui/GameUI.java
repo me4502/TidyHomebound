@@ -23,10 +23,7 @@ import com.me4502.tidyhomebound.game.actor.Clock;
 import com.me4502.tidyhomebound.game.actor.CopingBar;
 import com.me4502.tidyhomebound.game.actor.SelfCareBar;
 import com.me4502.tidyhomebound.room.RoomRenderer;
-import com.me4502.tidyhomebound.ui.dialog.Dialog;
-import com.me4502.tidyhomebound.ui.dialog.DialogHolder;
-import com.me4502.tidyhomebound.ui.dialog.DialogRenderer;
-import com.me4502.tidyhomebound.ui.dialog.StartDialog;
+import com.me4502.tidyhomebound.ui.dialog.*;
 
 public class GameUI extends ScreenAdapter implements DialogHolder {
 
@@ -193,6 +190,15 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         }
         if (this.backgroundStage != null) {
             this.backgroundStage.getViewport().update(width, height, true);
+        }
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+
+        if (getDialog() == null) {
+            setDialog(new PauseDialog(this));
         }
     }
 
