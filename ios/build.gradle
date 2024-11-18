@@ -33,7 +33,14 @@ dependencies {
   implementation project(':core')
 }
 
+def distribution = false
+
 robovm {
-  iosSignIdentity = "Apple Development: Madeline  Miller (2T2DCDM49U)"
-  iosProvisioningProfile = "TidyHomebound Dev"
+  if (distribution) {
+    iosSignIdentity = "Apple Distribution: Madeline  Miller (H2HUJZFHXA)"
+    iosProvisioningProfile = "TidyHomebound Dist"
+  } else {
+    iosSignIdentity = "Apple Development: Madeline  Miller (2T2DCDM49U)"
+    iosProvisioningProfile = "TidyHomebound Dev"
+  }
 }
