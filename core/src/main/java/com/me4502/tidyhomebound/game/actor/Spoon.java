@@ -11,13 +11,16 @@ import com.me4502.tidyhomebound.game.actor.chore.Chore;
 
 public class Spoon extends Image {
 
+    public static final int NORMAL_SIZE = 32;
+    public static final int LARGE_SIZE = 48;
+
     private final GameState gameState;
     private final Vector2 homePosition;
     private final boolean borrowed;
 
     private Chore target;
 
-    public Spoon(AssetManager assetManager, GameState gameState, Vector2 homePosition, boolean borrowed) {
+    public Spoon(AssetManager assetManager, GameState gameState, Vector2 homePosition, boolean borrowed, boolean largeMode) {
         super(borrowed ? assetManager.get(Assets.BORROWED_SPOON) : assetManager.get(Assets.SPOON));
 
         this.gameState = gameState;
@@ -25,7 +28,8 @@ public class Spoon extends Image {
         this.borrowed = borrowed;
 
         setPosition(homePosition.x, homePosition.y);
-        setSize(32, 32);
+        int size = largeMode ? LARGE_SIZE : NORMAL_SIZE;
+        setSize(size, size);
     }
 
     public Vector2 getHomePosition() {

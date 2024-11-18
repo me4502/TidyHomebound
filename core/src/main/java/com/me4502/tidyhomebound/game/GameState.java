@@ -145,9 +145,20 @@ public class GameState {
         }
 
         // Add new actors
-        int leftBound = (baseSpoons + baseEmergencySpoons) * (32 + 2);
+        boolean bigSpoon = ui.useLargeTouchTargets();
+        int spoonWidth = bigSpoon ? (Spoon.LARGE_SIZE + 2) : (Spoon.NORMAL_SIZE + 2);
+        int leftBound = (baseSpoons + baseEmergencySpoons) * spoonWidth;
         for (int i = 0; i < spoons + baseEmergencySpoons; i++) {
-            Spoon spoon = new Spoon(assetManager, this, new Vector2(TidyHomebound.GAME_WIDTH - 16 - (leftBound - (32 + 2) * i), TidyHomebound.GAME_HEIGHT - 137), i >= spoons);
+            Spoon spoon = new Spoon(
+                    assetManager,
+                    this,
+                    new Vector2(
+                            TidyHomebound.GAME_WIDTH - 16 - (leftBound - spoonWidth * i),
+                            TidyHomebound.GAME_HEIGHT - (bigSpoon ? 148 : 137)
+                    ),
+                    i >= spoons,
+                    bigSpoon
+            );
             spoonGroup.addActor(spoon);
             spoonActors.add(spoon);
             var dragAndDropSource = new Spoon.SpoonDragSource(spoon);

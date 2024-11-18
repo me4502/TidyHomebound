@@ -1,5 +1,6 @@
 package com.me4502.tidyhomebound.ui;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
@@ -235,5 +236,9 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public boolean useLargeTouchTargets() {
+        return Gdx.app.getType() == Application.ApplicationType.iOS;
     }
 }
