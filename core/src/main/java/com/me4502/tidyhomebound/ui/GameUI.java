@@ -13,7 +13,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 import com.me4502.tidyhomebound.game.GameInputProcessor;
@@ -31,7 +32,8 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
 
     private static final float FAKE_ASPECT_RATIO = 1.33f;
 
-    private final OrthographicCamera camera;
+    private final OrthographicCamera roomCamera;
+    private final OrthographicCamera stageCamera;
     private final SpriteBatch batch;
     private final RoomRenderer roomRenderer;
     private final AssetManager assetManager;
@@ -41,6 +43,7 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     private GameState gameState;
     private Dialog dialog;
     private InputMultiplexer inputProcessor;
+    private Stage backgroundStage;
     private Stage stage;
 
     private Sprite backgroundSprite;
@@ -56,12 +59,14 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         this.batch.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
         this.shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT);
 
-        this.camera = new OrthographicCamera(5.4f, 5.4f * ((TidyHomebound.GAME_HEIGHT * FAKE_ASPECT_RATIO) / (float)TidyHomebound.GAME_WIDTH));
-        camera.position.set(9.5f, 10, 9.5f);
-        camera.direction.set(-1, -1, -1);
-        camera.near = 0.1f;
-        camera.far = 100;
-        camera.zoom = 1.6f;
+        this.roomCamera = new OrthographicCamera(5.4f, 5.4f * ((TidyHomebound.GAME_HEIGHT * FAKE_ASPECT_RATIO) / (float)TidyHomebound.GAME_WIDTH));
+        roomCamera.position.set(9.5f, 10, 9.5f);
+        roomCamera.direction.set(-1, -1, -1);
+        roomCamera.near = 0.1f;
+        roomCamera.far = 100;
+        roomCamera.zoom = 1.6f;
+
+        this.stageCamera = new OrthographicCamera();
 
         Assets.loadGameAssets(this.assetManager);
     }
@@ -69,8 +74,9 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     @Override
     public void show() {
         this.backgroundSprite = new Sprite(assetManager.get(Assets.BACKGROUND_BASE));
-        this.stage = new Stage(new StretchViewport(TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT));
+        this.backgroundStage = new Stage(new ScalingViewport(Scaling.fill, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT), this.batch);
 
+        this.stage = new Stage(new ScalingViewport(Scaling.fit, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT, this.stageCamera), this.batch);
         this.gameState = new GameState(homebound, this, stage, assetManager);
         this.inputProcessor = new InputMultiplexer(new GameInputProcessor(this, this.gameState), stage);
 
@@ -111,6 +117,8 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
     private void renderNightTime(float nightPercentage) {
         // Handle night cycle
         if (nightPercentage > 0f) {
+            backgroundStage.getViewport().apply();
+
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -124,11 +132,16 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
             shapeRenderer.setColor(Color.WHITE);
 
             Gdx.gl.glDisable(GL20.GL_BLEND);
+
+            stage.getViewport().apply();
         }
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         if (dialog == null) {
             // Do not update while a dialog is up.
             gameState.update(delta);
@@ -139,12 +152,14 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
             }
         }
 
-        camera.update();
-
+        backgroundStage.getViewport().apply();
         renderBackground();
 
+        stage.getViewport().apply();
+        roomCamera.update();
+
         // Render the room first
-        roomRenderer.render(camera);
+        roomRenderer.render(roomCamera);
 
         batch.begin();
         DialogRenderer.drawDialog(
@@ -169,11 +184,26 @@ public class GameUI extends ScreenAdapter implements DialogHolder {
         }
     }
 
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+
+        if (this.stage != null) {
+            this.stage.getViewport().update(width, height, true);
+        }
+        if (this.backgroundStage != null) {
+            this.backgroundStage.getViewport().update(width, height, true);
+        }
+    }
+
     public void dispose() {
         batch.dispose();
         roomRenderer.dispose();
         if (stage != null) {
             stage.dispose();
+        }
+        if (backgroundStage != null) {
+            backgroundStage.dispose();
         }
         shapeRenderer.dispose();
     }

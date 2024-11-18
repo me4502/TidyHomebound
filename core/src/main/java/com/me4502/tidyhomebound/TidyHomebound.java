@@ -35,6 +35,8 @@ public class TidyHomebound extends Game {
 		super.resize(width, height);
 
 		GLOBAL_SCALE = width / (float) GAME_WIDTH;
+
+		this.ui.resize(width, height);
 	}
 
 	@Override
