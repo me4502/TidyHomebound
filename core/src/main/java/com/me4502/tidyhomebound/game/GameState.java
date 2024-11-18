@@ -37,9 +37,10 @@ public class GameState {
 
     private final static double TWILIGHT_BRIGHTNESS = 0.3;
 
-    private final static double SELF_CARE_LOW = 0.5;
-    private final static double SELF_CARE_CRITICAL = 0.2;
-    private final static double SELF_CARE_AMBIENT_LOSS = 0.01;
+    public final static double SELF_CARE_HIGH = 0.7;
+    public final static double SELF_CARE_LOW = 0.5;
+    public final static double SELF_CARE_CRITICAL = 0.2;
+    public final static double SELF_CARE_AMBIENT_LOSS = 0.01;
 
     // Everything that is set for the whole game
     private final GameUI ui;
@@ -250,6 +251,9 @@ public class GameState {
         if (position != null) {
             if (modifier > 0) {
                 toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_POSITIVE), position));
+                if (selfCare >= SELF_CARE_HIGH) {
+                    toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_POSITIVE), bedActor.getToastPosition()));
+                }
             } else if (modifier < 0) {
                 toastGroup.addActor(new Toast(assetManager.get(Assets.TOAST_NEGATIVE), position));
                 if (selfCare < SELF_CARE_CRITICAL) {

@@ -61,14 +61,17 @@ public class ImageChore extends Image implements Chore {
 
         updateState();
 
+        // Only display smoke and add the penalty if we've got no assigned spoons.
+        boolean smokeCutoff = urgency >= SMOKE_CUTOFF && assignedSpoons.isEmpty();
+
         if (state == State.CRITICAL) {
             timeSinceDamage += delta;
             if (timeSinceDamage >= 5) {
                 timeSinceDamage = 0;
-                gameState.modifyHandling(-attributes.getImportance() * (urgency >= SMOKE_CUTOFF ? 0.125 : 0.075), getToastPosition());
+                gameState.modifyHandling(-attributes.getImportance() * (smokeCutoff ? 0.125 : 0.075), getToastPosition());
             }
         }
-        if (urgency >= SMOKE_CUTOFF && Math.random() > 0.9) {
+        if (smokeCutoff && Math.random() > 0.9) {
             gameState.addSmoke(this);
         }
     }
@@ -121,7 +124,14 @@ public class ImageChore extends Image implements Chore {
         if (attributes.getSelfCare() != 0) {
             gameState.modifySelfCare(attributes.getSelfCare(), getToastPosition().cpy().sub(0, 18));
         }
-        gameState.modifyHandling(0.05, getToastPosition());
+
+        double reward = 0.05;
+        if (gameState.getSelfCare() >= GameState.SELF_CARE_HIGH) {
+            // If self care is very high, double the reward.
+            reward *= 2;
+        }
+
+        gameState.modifyHandling(reward, getToastPosition());
     }
 
     @Override
