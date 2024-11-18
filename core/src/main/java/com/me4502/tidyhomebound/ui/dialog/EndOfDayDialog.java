@@ -16,7 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 import com.me4502.tidyhomebound.game.GameState;
@@ -32,7 +33,7 @@ public class EndOfDayDialog extends Dialog {
     public EndOfDayDialog(AssetManager assetManager, DialogHolder parent, GameState gameState) {
         super(parent);
         this.gameState = gameState;
-        this.stage = new Stage(new StretchViewport(TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT));
+        this.stage = new Stage(new ScalingViewport(Scaling.fit, TidyHomebound.GAME_WIDTH, TidyHomebound.GAME_HEIGHT));
         stage.setDebugAll(TidyHomebound.DEBUG_MODE);
         this.multiplexedInput = new InputMultiplexer(stage, this);
 
@@ -77,6 +78,7 @@ public class EndOfDayDialog extends Dialog {
 
     @Override
     public void render(SpriteBatch batch, AssetManager assetManager) {
+        this.stage.getViewport().apply();
         batch.begin();
         DialogRenderer.drawDialog(
             assetManager,
