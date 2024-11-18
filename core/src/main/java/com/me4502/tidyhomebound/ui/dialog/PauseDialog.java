@@ -10,13 +10,17 @@ import com.me4502.tidyhomebound.Assets;
 import com.me4502.tidyhomebound.TidyHomebound;
 
 public class PauseDialog extends Dialog {
+    private final long startTime;
+
     public PauseDialog(DialogHolder parent) {
         super(parent);
+
+        this.startTime = System.currentTimeMillis();
     }
 
     @Override
     public void render(SpriteBatch batch, AssetManager assetManager) {
-        if (System.currentTimeMillis() / 1000 % 2 == 0) {
+        if ((System.currentTimeMillis() - startTime) / 1000 % 2 == 1) {
             return;
         }
 
@@ -35,11 +39,21 @@ public class PauseDialog extends Dialog {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
+        if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.PAUSE) {
             this.parent.setDialog(null);
             return true;
         }
 
         return super.keyDown(keycode);
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.LEFT) {
+            this.parent.setDialog(null);
+            return true;
+        }
+
+        return super.touchDown(screenX, screenY, pointer, button);
     }
 }

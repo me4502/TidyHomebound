@@ -31,6 +31,13 @@ public class TidyHomebound extends Game {
 	}
 
 	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+
+		GLOBAL_SCALE = width / (float) GAME_WIDTH;
+	}
+
+	@Override
 	public void render() {
 		super.render();
 	}
