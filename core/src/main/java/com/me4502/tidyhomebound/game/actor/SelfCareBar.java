@@ -28,11 +28,12 @@ public class SelfCareBar extends Actor {
 
     private final NinePatch emptyNinePatch, fullNinePatch;
     private final BitmapFont font;
-    private final ShapeRenderer shapeBatch;
+    private final ShapeRenderer shapeRenderer;
 
-    public SelfCareBar(AssetManager assetManager, GameState gameState, Vector2 position, float width, float height) {
+    public SelfCareBar(AssetManager assetManager, GameState gameState, ShapeRenderer shapeRenderer, Vector2 position, float width, float height) {
         this.gameState = gameState;
         this.position = position;
+        this.shapeRenderer = shapeRenderer;
         this.width = width;
         this.height = height;
 
@@ -43,8 +44,6 @@ public class SelfCareBar extends Actor {
         fullNinePatch = fullBar.createPatch("coping_bar_full");
 
         font = assetManager.get(Assets.DOGICA);
-
-        shapeBatch = new ShapeRenderer();
     }
 
     @Override
@@ -100,15 +99,18 @@ public class SelfCareBar extends Actor {
         // Draw lines at each special case interval
         double[] specialCases = {GameState.SELF_CARE_HIGH, GameState.SELF_CARE_LOW, GameState.SELF_CARE_CRITICAL};
 
-        shapeBatch.begin(ShapeRenderer.ShapeType.Filled);
-        shapeBatch.setColor(new Color(0, 0, 1, 0.5f));
-        for (double i : specialCases) {
-            shapeBatch.rectLine(
-                    new Vector2((float) (position.x + (width * i)), position.y - 16 + 4),
-                    new Vector2((float) (position.x + (width * i)), position.y - 16 + height - 4),
-                    2
-            );
+        if (shapeRenderer != null) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(new Color(0, 0, 1, 0.5f));
+            for (double i : specialCases) {
+                shapeRenderer.rectLine(
+                        new Vector2((float) (position.x + (width * i)), (position.y - 16 + 4)),
+                        new Vector2((float) (position.x + (width * i)), (position.y - 16 + height - 4)),
+                        2
+                );
+            }
+            shapeRenderer.end();
+            shapeRenderer.setColor(Color.WHITE);
         }
-        shapeBatch.end();
     }
 }

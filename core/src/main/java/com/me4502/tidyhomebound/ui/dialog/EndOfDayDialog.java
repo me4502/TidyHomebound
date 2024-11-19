@@ -47,7 +47,7 @@ public class EndOfDayDialog extends Dialog {
             .size(TidyHomebound.GAME_WIDTH - 90, 32 + 35).padBottom(10);
 
         table.row();
-        table.add(new SelfCareBar(assetManager, gameState, new Vector2(45, TidyHomebound.GAME_HEIGHT - 175), TidyHomebound.GAME_WIDTH - 90, 32))
+        table.add(new SelfCareBar(assetManager, gameState, null, new Vector2(45, TidyHomebound.GAME_HEIGHT - 175), TidyHomebound.GAME_WIDTH - 90, 32))
             .size(TidyHomebound.GAME_WIDTH - 90, 32 + 35).padBottom(10);
 
         table.row();
