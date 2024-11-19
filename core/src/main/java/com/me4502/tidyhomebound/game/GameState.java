@@ -37,7 +37,7 @@ public class GameState {
 
     private final static double TWILIGHT_BRIGHTNESS = 0.3;
 
-    public final static double SELF_CARE_HIGH = 0.7;
+    public final static double SELF_CARE_HIGH = 0.8;
     public final static double SELF_CARE_LOW = 0.5;
     public final static double SELF_CARE_CRITICAL = 0.2;
     public final static double SELF_CARE_AMBIENT_LOSS = 0.01;

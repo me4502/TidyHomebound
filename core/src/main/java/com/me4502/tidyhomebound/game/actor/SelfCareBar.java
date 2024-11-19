@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,6 +28,7 @@ public class SelfCareBar extends Actor {
 
     private final NinePatch emptyNinePatch, fullNinePatch;
     private final BitmapFont font;
+    private final ShapeRenderer shapeBatch;
 
     public SelfCareBar(AssetManager assetManager, GameState gameState, Vector2 position, float width, float height) {
         this.gameState = gameState;
@@ -41,6 +43,8 @@ public class SelfCareBar extends Actor {
         fullNinePatch = fullBar.createPatch("coping_bar_full");
 
         font = assetManager.get(Assets.DOGICA);
+
+        shapeBatch = new ShapeRenderer();
     }
 
     @Override
@@ -92,5 +96,19 @@ public class SelfCareBar extends Actor {
             batch.flush();
             ScissorStack.popScissors();
         }
+
+        // Draw lines at each special case interval
+        double[] specialCases = {GameState.SELF_CARE_HIGH, GameState.SELF_CARE_LOW, GameState.SELF_CARE_CRITICAL};
+
+        shapeBatch.begin(ShapeRenderer.ShapeType.Filled);
+        shapeBatch.setColor(new Color(0, 0, 1, 0.5f));
+        for (double i : specialCases) {
+            shapeBatch.rectLine(
+                    new Vector2((float) (position.x + (width * i)), position.y - 16 + 4),
+                    new Vector2((float) (position.x + (width * i)), position.y - 16 + height - 4),
+                    2
+            );
+        }
+        shapeBatch.end();
     }
 }
