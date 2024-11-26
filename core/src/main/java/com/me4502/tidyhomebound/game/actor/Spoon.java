@@ -59,12 +59,12 @@ public class Spoon extends Image {
             target.perform(this, delta);
             if (target.isComplete()) {
                 target.reward();
-                detatchSpoon(true);
+                detachSpoon(true);
             }
         }
     }
 
-    public void detatchSpoon(boolean snapBack) {
+    public void detachSpoon(boolean snapBack) {
         target.removeSpoon(this);
         setTarget(null, snapBack);
         if (isBorrowed()) {
@@ -89,7 +89,7 @@ public class Spoon extends Image {
                     // Can't drag a borrowed spoon
                     return null;
                 }
-                spoon.detatchSpoon(false);
+                spoon.detachSpoon(false);
             }
             DragAndDrop.Payload payload = new DragAndDrop.Payload();
             payload.setDragActor(spoon);
